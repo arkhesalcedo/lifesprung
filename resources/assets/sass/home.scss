@@ -108,6 +108,12 @@ html, body {
 	}
 }
 
+.titleInfo {
+	font-size: 1rem;
+	color: rgba(0, 0, 0, 0.4);
+	font-weight: bold;
+}
+
 /* general style for the form */
 .theForm {
 	width: 100%;
@@ -261,6 +267,7 @@ input[type="text"]:focus::-ms-input-placeholder {
 
 	    &.current-dot {
 		    transform: perspective(1000px) rotate3d(0, 1, 0, 180deg);
+		    pointer-events: none;
 		}
 	}
 }
@@ -320,14 +327,13 @@ ul.ac-custom {
 
 .ac-custom li {
 	position: relative;
-	margin-bottom: 20px;
 }
 
 .ac-custom label {
 	display: inline-block;
 	position: relative;
 	font-size: 2rem;
-	padding: 0 0 0 50px;
+	padding: 0 0 0 45px;
 	vertical-align: top;
 	color: $white;
 	cursor: pointer;
@@ -431,11 +437,19 @@ ul.ac-custom {
 
 .subQ {
 	font-size: 1.5rem;
-    padding-left: 5rem;
 
     label {
     	font-size: 1.5rem;
     }
+
+    ul {
+    	margin: 0px 0px 20px;
+
+    	li {
+    		display: inline-block;
+    		margin-right: 5px;
+    	}
+	}
 }
 
 @media only screen and (max-width: 992px) {
@@ -455,9 +469,9 @@ ul.ac-custom {
 		width: 100%;
 	},
 
-	.theForm, .ac-custom label {
-		font-size: 1.5rem;
-		line-height: 1.5rem;
+	.theForm, .ac-custom label, .subQ, .subQ label {
+		font-size: 1.2rem;
+		line-height: 1.2rem;
 	}
 
 	.subtitle {
@@ -474,5 +488,13 @@ ul.ac-custom {
 
 	.fs-controls h2, .numbers, .submit-wrap {
 		margin: 10px;
+	}
+
+	.subQ ul {
+		margin-top: 20px;
+	}
+
+	.ac-custom svg {
+		margin-top: -4px;
 	}
 }

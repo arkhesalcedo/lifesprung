@@ -207,15 +207,57 @@
                     <div :class="[formSectionsClass.q4]" v-show="formSections.q4">
                         <div class="fs-fields fs-anim-upper">
                             Have you ever been diagnosed or treated for:<br>
+                        </div>
 
+                        <div class="fs-fields fs-anim-lower">
                             <ul class="ac-custom ac-checkbox ac-boxfill">
                                 <li>
                                     <input id="blood" v-model="formData.sicknessSub" value="blood" type="checkbox">
                                     <label for="blood">High Blood Pressure?</label>
                                 </li>
+                                <li v-show="hasSickness('blood')">
+                                    <div class="subQ">
+                                        Is your blood pressure currently in the normal range?<br>
+
+                                        <ul class="ac-custom ac-radio ac-fill">
+                                            <li>
+                                                <input id="yesBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="yes" type="radio">
+                                                <label for="yesBlood">Yes</label>
+                                            </li>
+                                            <li>
+                                                <input id="noBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="no" type="radio">
+                                                <label for="noBlood">No</label>
+                                            </li>
+                                            <li>
+                                                <input id="dontKnowBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="dontKnow" type="radio">
+                                                <label for="dontKnowBlood">I Don't Know</label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
                                 <li>
                                     <input id="cholesterol" v-model="formData.sicknessSub" value="cholesterol" type="checkbox">
                                     <label for="cholesterol">High Cholesterol?</label>
+                                </li>
+                                <li v-show="hasSickness('cholesterol')">
+                                    <div class="subQ">
+                                        Is your cholesterol currently in the normal range?<br>
+
+                                        <ul class="ac-custom ac-radio ac-fill">
+                                            <li>
+                                                <input id="yescholesterol" v-model="formData.sicknessSubOptions.cholesterol" name="cholesterolSub" value="yes" type="radio">
+                                                <label for="yescholesterol">Yes</label>
+                                            </li>
+                                            <li>
+                                                <input id="nocholesterol" v-model="formData.sicknessSubOptions.cholesterol" name="cholesterolSub" value="no" type="radio">
+                                                <label for="nocholesterol">No</label>
+                                            </li>
+                                            <li>
+                                                <input id="dontKnowcholesterol" v-model="formData.sicknessSubOptions.cholesterol" name="cholesterolSub" value="dontKnow" type="radio">
+                                                <label for="dontKnowcholesterol">I Don't Know</label>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </li>
                                 <li>
                                     <input id="anxiety" v-model="formData.sicknessSub" value="anxiety" type="checkbox">
@@ -223,90 +265,93 @@
                                 </li>
                             </ul>
                         </div>
-
-                        <div class="fs-fields fs-anim-lower">
-                            <div class="subQ">
-                                Is your blood pressure currently in the normal range?<br>
-
-                                <ul class="ac-custom ac-radio ac-fill">
-                                    <li>
-                                        <input id="yesBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="yes" type="radio">
-                                        <label for="yesBlood">Yes</label>
-                                    </li>
-                                    <li>
-                                        <input id="noBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="no" type="radio">
-                                        <label for="noBlood">No</label>
-                                    </li>
-                                    <li>
-                                        <input id="dontKnowBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="dontKnow" type="radio">
-                                        <label for="dontKnowBlood">I Don't Know</label>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
 
                     <div :class="[formSectionsClass.q5]" v-show="formSections.q5">
                         <div class="fs-fields fs-anim-upper">
-                            <div class="subQ">
-                                Is your cholesterol currently in the normal range?<br>
-
-                                <ul class="ac-custom ac-radio ac-fill">
-                                    <li>
-                                        <input id="yesBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="yes" type="radio">
-                                        <label for="yesBlood">Yes</label>
-                                    </li>
-                                    <li>
-                                        <input id="noBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="no" type="radio">
-                                        <label for="noBlood">No</label>
-                                    </li>
-                                    <li>
-                                        <input id="dontKnowBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="dontKnow" type="radio">
-                                        <label for="dontKnowBlood">I Don't Know</label>
-                                    </li>
-                                </ul>
-                            </div>
+                            Are you currently getting paid to engage in any of the following occupations?<br>
+                            <i class="titleInfo">Check all that apply.</i>
                         </div>
 
                         <div class="fs-fields fs-anim-lower">
-                            <div class="subQ">
-                                Is your cholesterol currently in the normal range?<br>
-
-                                <ul class="ac-custom ac-radio ac-fill">
-                                    <li>
-                                        <input id="yesBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="yes" type="radio">
-                                        <label for="yesBlood">Yes</label>
-                                    </li>
-                                    <li>
-                                        <input id="noBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="no" type="radio">
-                                        <label for="noBlood">No</label>
-                                    </li>
-                                    <li>
-                                        <input id="dontKnowBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="dontKnow" type="radio">
-                                        <label for="dontKnowBlood">I Don't Know</label>
-                                    </li>
-                                </ul>
-                            </div>
+                            <ul class="ac-custom ac-checkbox ac-boxfill">
+                                <li>
+                                    <input id="pilot" v-model="formData.occupation" value="pilot" type="checkbox">
+                                    <label for="pilot">Commercial Pilot</label>
+                                </li>
+                                <li>
+                                    <input id="diver" v-model="formData.occupation" value="diver" type="checkbox">
+                                    <label for="diver">Scuba Diver</label>
+                                </li>
+                                <li>
+                                    <input id="worker" v-model="formData.occupation" value="worker" type="checkbox">
+                                    <label for="worker">Off-Shore Rig Worker</label>
+                                </li>
+                                <li>
+                                    <input id="boxer" v-model="formData.occupation" value="boxer" type="checkbox">
+                                    <label for="boxer">Boxer or Martial Artist</label>
+                                </li>
+                                <li>
+                                    <input id="explosives" v-model="formData.occupation" value="explosives" type="checkbox">
+                                    <label for="explosives">Handler of Explosives</label>
+                                </li>
+                                <li>
+                                    <input id="chemicals" v-model="formData.occupation" value="chemicals" type="checkbox">
+                                    <label for="chemicals">Handler of Dangerous Chemicals</label>
+                                </li>
+                                <li>
+                                    <input id="stunt" v-model="formData.occupation" value="stunt" type="checkbox">
+                                    <label for="stunt">Stunt Professional</label>
+                                </li>
+                                <li>
+                                    <input id="noneO" v-model="formData.occupation" value="noneO" type="checkbox">
+                                    <label for="noneO">None of the above</label>
+                                </li>
+                            </ul>
                         </div>
                     </div>
 
                     <div :class="[formSectionsClass.q6]" v-show="formSections.q6">
                         <div class="fs-fields fs-anim-upper">
-                            I
-
-                            <select v-model="formData.heart" name="heart">
-                                <option value="yes">have at one time</option>
-                                <option value="no">haven’t ever</option> 
-                            </select> been diagnosed or treated for heart disease.
+                            Do you, or are you planning to engage in any of the following activities?<br>
+                            <i class="titleInfo">Check all that apply.</i>
                         </div>
 
                         <div class="fs-fields fs-anim-lower">
-                            I
-
-                            <select v-model="formData.liver" name="liver">
-                                <option value="yes">have at one time</option>
-                                <option value="no">haven’t ever</option> 
-                            </select> been diagnosed or treated for liver disease.
+                            <ul class="ac-custom ac-checkbox ac-boxfill">
+                                <li>
+                                    <input id="skydiving" v-model="formData.activities" value="skydiving" type="checkbox">
+                                    <label for="skydiving">Skydiving or Base Jumping</label>
+                                </li>
+                                <li>
+                                    <input id="flying" v-model="formData.activities" value="flying" type="checkbox">
+                                    <label for="flying">Flying a Private Plane</label>
+                                </li>
+                                <li>
+                                    <input id="scuba" v-model="formData.activities" value="scuba" type="checkbox">
+                                    <label for="scuba">Scuba, Cave, Cliff or Wreck Diving</label>
+                                </li>
+                                <li>
+                                    <input id="skiing" v-model="formData.activities" value="skiing" type="checkbox">
+                                    <label for="skiing">Backcountry Skiing</label>
+                                </li>
+                                <li>
+                                    <input id="gliding" v-model="formData.activities" value="gliding" type="checkbox">
+                                    <label for="gliding">Hang Gliding</label>
+                                </li>
+                                <li>
+                                    <input id="climbing" v-model="formData.activities" value="climbing" type="checkbox">
+                                    <label for="climbing">Mountain Climbing</label>
+                                </li>
+                                <li>
+                                    <input id="racing" v-model="formData.activities" value="racing" type="checkbox">
+                                    <label for="racing">Car or Motorcycle Racing</label>
+                                </li>
+                                <li>
+                                    <input id="noneA" v-model="formData.activities" value="noneA" type="checkbox">
+                                    <label for="noneA">None of the above</label>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </form>
@@ -321,12 +366,12 @@
             </div>
 
             <nav class="nav-dots">
-                <button :class="[formSections.q1 ? 'current-dot' : 'disabled']" @click="moveTo('2')"></button>
-                <button :class="[formSections.q2 ? 'current-dot' : 'disabled']" @click="moveTo('3')"></button>
-                <button :class="[formSections.q3 ? 'current-dot' : 'disabled']" @click="moveTo('4')"></button>
-                <button :class="[formSections.q4 ? 'current-dot' : 'disabled']" @click="moveTo('5')"></button>
-                <button :class="[formSections.q5 ? 'current-dot' : 'disabled']" @click="moveTo('6')"></button>
-                <button :class="[formSections.q6 ? 'current-dot' : 'disabled']" @click="moveTo('summary')"></button>
+                <button :class="[formSections.q1 ? 'current-dot' : 'disabled']" @click="moveTo('1')"></button>
+                <button :class="[formSections.q2 ? 'current-dot' : 'disabled']" @click="moveTo('2')"></button>
+                <button :class="[formSections.q3 ? 'current-dot' : 'disabled']" @click="moveTo('3')"></button>
+                <button :class="[formSections.q4 ? 'current-dot' : 'disabled']" @click="moveTo('4')"></button>
+                <button :class="[formSections.q5 ? 'current-dot' : 'disabled']" @click="moveTo('5')"></button>
+                <button :class="[formSections.q6 ? 'current-dot' : 'disabled']" @click="moveTo('6')"></button>
             </nav>
 
             <span class="numbers">
@@ -358,7 +403,9 @@
                         blood: null,
                         cholesterol: null,
                         anxiety: null
-                    }
+                    },
+                    occupation: [],
+                    activities: []
                 },
                 formSections: {
                     q1: true,
