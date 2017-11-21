@@ -1,39 +1,41 @@
 <template>
-    <section>
-        <div class="full-height flex-center" :class="{ 'bg': formActive }">
-            <div class="content" v-show="! formActive">
-                <img :src="logo" class="logo">
+    <section class="front">
+        <div class="container">
+            <div class="full-height flex-center row" v-show="! formActive">
+                <section class="col-sm-12 text-center">
+                    <img :src="logo" class="logo">
 
-                <h1 class="title">
-                    Lifesprung
-                </h1>
+                    <h1 class="title">
+                        Lifesprung
+                    </h1>
 
-                <p class="subtitle" v-if="summary">
-                    Thank you! <br>
-                    We will be in touch.
-                </p>
+                    <p class="subtitle" v-if="summary">
+                        <span v-if="qualified">It is very likely that you will qualify for low-cost life insurance.</span>
+                        <span v-else>We need ask you more questions to evaluate your eligibility.</span>
+                        <br><br>
+                        Please call us at <i class="text-success"><b>555-555-5555</b></i>
+                    </p>
 
-                <p class="subtitle" v-else>
-                    Find out if you are likely to qualify for the <br>
-                    lowest life insurance rates by answering the following questions:
-                </p>
+                    <p class="subtitle" v-else>
+                        Find out if you are likely to qualify <br>
+                        for the lowest life insurance rates by answering the following questions:
+                    </p>
 
-                <button @click="activateForm" class="button" v-show="! summary">Start Here</button>
+                    <button @click="activateForm" class="btn btn-primary" v-show="! summary">Start Here</button>
+                </section>
             </div>
 
-            <div class="container" :class="{ 'containerVisible': formActive }">
+            <div class="col-xs-12 col-md-8 col-md-offset-2" v-show="formActive">
                 <form class="theForm" @submit.prevent="" autocomplete="off">
                     <div :class="[formSectionsClass.q1]" v-show="formSections.q1">
                         <div class="fs-fields fs-anim-upper">
-                            I am
+                            <p class="subtitle">I am
 
                             <select v-model="formData.age" name="age">
                                 <option :value="n + 17" v-for="n in 33">{{ n + 17 }}</option>   
                             </select>
 
-                            years old and <br>
-
-                            I weight about <select v-model="formData.weight" name="weight">
+                            years old and I weight about <select v-model="formData.weight" name="weight">
                                 <option value="60">60</option>
                                 <option value="65">65</option>
                                 <option value="70">70</option>
@@ -103,11 +105,11 @@
                                 <option value="390">390</option>
                                 <option value="395">395</option>
                                 <option value="400">400</option>   
-                            </select> pounds.
+                            </select> pounds.</p>
                         </div>
 
                         <div class="fs-fields fs-anim-lower">
-                            I am
+                            <p class="subtitle">I am
 
                             <select v-model="formData.feet" name="feet">
                                 <option :value="n + 3" v-for="n in 8">{{ n + 3 }}</option>   
@@ -115,166 +117,169 @@
 
                             <select v-model="formData.inches" name="inches">
                                 <option :value="n + 1" v-for="n in 10">{{ n + 1 }}</option>   
-                            </select> inches tall.<br><br>
+                            </select> inches tall.</p>
 
-                            I currently work
+                            <p class="subtitle">I currently work
 
                             <select v-model="formData.work" name="work">
                                 <option value="yes">more than</option>
                                 <option value="no">less than</option> 
                                 <option value="about">about</option> 
-                            </select> thirty hours per week.
+                            </select> thirty hours per week.</p>
                         </div>
                     </div>
 
                     <div :class="[formSectionsClass.q2]" v-show="formSections.q2">
                         <div class="fs-fields fs-anim-upper">
-                            I typically drink
+                            <p class="subtitle">I typically drink
 
                             <select v-model="formData.drink" name="drink">
                                 <option value="yes">more</option>
                                 <option value="no">less</option>
-                            </select> than 21 drinks per week.<br><br>
+                            </select> than 21 drinks per week.</p>
 
-                            I
+                            <p class="subtitle">I
 
                             <select v-model="formData.violation" name="violation">
                                 <option value="yes">had</option>
                                 <option value="no">didn’t have</option> 
-                            </select> more than one moving violation in the past 12 months.
+                            </select> more than one moving violation in the past 12 months.</p>
                         </div>
 
                         <div class="fs-fields fs-anim-lower">
-                            Have you ever been diagnosed or treated for:<br>
+                            <p class="subtitle">Have you ever been diagnosed or treated for:</p>
 
-                            <ul class="ac-custom ac-checkbox ac-boxfill">
-                                <li>
-                                    <input id="cancer" v-model="formData.sickness" value="cancer" type="checkbox">
-                                    <label for="cancer">Cancer?</label>
-                                </li>
-                                <li>
-                                    <input id="diabetes" v-model="formData.sickness" value="diabetes" type="checkbox">
-                                    <label for="diabetes">Diabetes?</label>
-                                </li>
-                                <li>
-                                    <input id="sclerosis" v-model="formData.sickness" value="sclerosis" type="checkbox">
-                                    <label for="sclerosis">Multiple Sclerosis?</label>
-                                </li>
-                            </ul>
+                            <p class="options">
+                                <span @click="toggleYesNo('cancer', 'yes')" :class="{ 'selected' : formData.cancer == 'yes'}">Yes</span>
+                                <span @click="toggleYesNo('cancer', 'no')" :class="{ 'selected' : formData.cancer == 'no'}">No</span>
+                                Cancer
+                            </p>
+                            <p class="options">
+                                <span @click="toggleYesNo('diabetes', 'yes')" :class="{ 'selected' : formData.diabetes == 'yes'}">Yes</span>
+                                <span @click="toggleYesNo('diabetes', 'no')" :class="{ 'selected' : formData.diabetes == 'no'}">No</span>
+                                Diabetes
+                            </p>
+                            <p class="options">
+                                <span @click="toggleYesNo('sclerosis', 'yes')" :class="{ 'selected' : formData.sclerosis == 'yes'}">Yes</span>
+                                <span @click="toggleYesNo('sclerosis', 'no')" :class="{ 'selected' : formData.sclerosis == 'no'}">No</span>
+                                Sclerosis
+                            </p>
                         </div>
                     </div>
 
                     <div :class="[formSectionsClass.q3]" v-show="formSections.q3">
                         <div class="fs-fields fs-anim-upper">
-                            Have you ever been diagnosed or treated for:<br>
+                            <p class="subtitle">Have you ever been diagnosed or treated for:</p>
 
-                            <ul class="ac-custom ac-checkbox ac-boxfill">
-                                <li>
-                                    <input id="kidney" v-model="formData.sickness" value="kidney" type="checkbox">
-                                    <label for="kidney">Kidney Disease?</label>
-                                </li>
-                                <li>
-                                    <input id="heart" v-model="formData.sickness" value="heart" type="checkbox">
-                                    <label for="heart">Heart Disease?</label>
-                                </li>
-                                <li>
-                                    <input id="liver" v-model="formData.sickness" value="liver" type="checkbox">
-                                    <label for="liver">Liver Disease?</label>
-                                </li>
-                            </ul>
+                            <p class="options">
+                                <span @click="toggleYesNo('kidney', 'yes')" :class="{ 'selected' : formData.kidney == 'yes'}">Yes</span>
+                                <span @click="toggleYesNo('kidney', 'no')" :class="{ 'selected' : formData.kidney == 'no'}">No</span>
+                                Kidney Disease?
+                            </p>
+                            <p class="options">
+                                <span @click="toggleYesNo('heart', 'yes')" :class="{ 'selected' : formData.heart == 'yes'}">Yes</span>
+                                <span @click="toggleYesNo('heart', 'no')" :class="{ 'selected' : formData.heart == 'no'}">No</span>
+                                Heart Disease?
+                            </p>
+                            <p class="options">
+                                <span @click="toggleYesNo('liver', 'yes')" :class="{ 'selected' : formData.liver == 'yes'}">Yes</span>
+                                <span @click="toggleYesNo('liver', 'no')" :class="{ 'selected' : formData.liver == 'no'}">No</span>
+                                Liver Disease?
+                            </p>
                         </div>
 
                         <div class="fs-fields fs-anim-lower">
-                            Have 2 or more of your parents or siblings been diagnosed before the age of sixty with:<br>
+                            <p class="subtitle">Have 2 or more of your parents or siblings been diagnosed before the age of sixty with:</p>
 
-                            <ul class="ac-custom ac-checkbox ac-boxfill">
-                                <li>
-                                    <input id="stroke" v-model="formData.sicknessRelative" value="stroke" type="checkbox">
-                                    <label for="stroke">Stroke?</label>
-                                </li>
-                                <li>
-                                    <input id="heartR" v-model="formData.sicknessRelative" value="heart" type="checkbox">
-                                    <label for="heartR">Heart Disease?</label>
-                                </li>
-                                <li>
-                                    <input id="cancerR" v-model="formData.sicknessRelative" value="cancer" type="checkbox">
-                                    <label for="cancerR">Cancer?</label>
-                                </li>
-                            </ul>
+                            <p class="options">
+                                <span @click="toggleYesNo('stroke', 'yes')" :class="{ 'selected' : formData.stroke == 'yes'}">Yes</span>
+                                <span @click="toggleYesNo('stroke', 'no')" :class="{ 'selected' : formData.stroke == 'no'}">No</span>
+                                Stroke?
+                            </p>
+                            <p class="options">
+                                <span @click="toggleYesNo('heartR', 'yes')" :class="{ 'selected' : formData.heartR == 'yes'}">Yes</span>
+                                <span @click="toggleYesNo('heartR', 'no')" :class="{ 'selected' : formData.heartR == 'no'}">No</span>
+                                Heart Disease?
+                            </p>
+                            <p class="options">
+                                <span @click="toggleYesNo('cancerR', 'yes')" :class="{ 'selected' : formData.cancerR == 'yes'}">Yes</span>
+                                <span @click="toggleYesNo('cancerR', 'no')" :class="{ 'selected' : formData.cancerR == 'no'}">No</span>
+                                Cancer?
+                            </p>
                         </div>
                     </div>
 
                     <div :class="[formSectionsClass.q4]" v-show="formSections.q4">
                         <div class="fs-fields fs-anim-upper">
-                            Have you ever been diagnosed or treated for:<br>
+                            <p class="subtitle">Have you ever been diagnosed or treated for:</p>
                         </div>
 
                         <div class="fs-fields fs-anim-lower">
-                            <ul class="ac-custom ac-checkbox ac-boxfill">
-                                <li>
-                                    <input id="blood" v-model="formData.sicknessSub" value="blood" type="checkbox">
-                                    <label for="blood">High Blood Pressure?</label>
-                                </li>
-                                <li v-show="hasSickness('blood')">
-                                    <div class="subQ">
-                                        Is your blood pressure currently in the normal range?<br>
+                            <p class="options">
+                                High Blood Pressure?<br>
+                                <span @click="toggleYesNo('blood', 'yes')" :class="{ 'selected' : formData.blood == 'yes'}">Yes</span>
+                                <span @click="toggleYesNo('blood', 'no')" :class="{ 'selected' : formData.blood == 'no'}">No</span>
+                            </p>
+                            <div class="subQ" v-show="formData.blood == 'yes'">
+                                <p class="subtitle">
+                                    Is your blood pressure currently in the normal range?<br>
+                                    <span @click="toggleYesNo('blood1', 'yes')" :class="{ 'selected' : formData.blood1 == 'yes'}">Yes</span>
+                                    <span @click="toggleYesNo('blood1', 'no')" :class="{ 'selected' : formData.blood1 == 'no'}">No</span>
+                                    <span @click="toggleYesNo('blood1', 'dontknow')" :class="{ 'selected' : formData.blood1 == 'dontknow'}">I Don't Know</span>
+                                </p>
+                            </div>
+                            <p class="options">
+                                High Cholesterol?<br>
+                                <span @click="toggleYesNo('cholesterol', 'yes')" :class="{ 'selected' : formData.cholesterol == 'yes'}">Yes</span>
+                                <span @click="toggleYesNo('cholesterol', 'no')" :class="{ 'selected' : formData.cholesterol == 'no'}">No</span>
+                            </p>
+                            <div class="subQ" v-show="formData.cholesterol == 'yes'">
+                                <p class="subtitle">
+                                    Is your cholesterol currently in the normal range?<br>
+                                    <span @click="toggleYesNo('cholesterol1', 'yes')" :class="{ 'selected' : formData.cholesterol1 == 'yes'}">Yes</span>
+                                    <span @click="toggleYesNo('cholesterol1', 'no')" :class="{ 'selected' : formData.cholesterol1 == 'no'}">No</span>
+                                    <span @click="toggleYesNo('cholesterol1', 'dontknow')" :class="{ 'selected' : formData.cholesterol1 == 'dontknow'}">I Don't Know</span>
+                                </p>
+                            </div>
+                            <p class="options">
+                                Depression or Anxiety?<br>
+                                <span @click="toggleYesNo('anxiety', 'yes')" :class="{ 'selected' : formData.anxiety == 'yes'}">Yes</span>
+                                <span @click="toggleYesNo('anxiety', 'no')" :class="{ 'selected' : formData.anxiety == 'no'}">No</span>
+                            </p>
+                            <div class="subQ" v-show="formData.anxiety == 'yes'">
+                                <p class="subtitle">
+                                    Have you ever been admitted to a hospital for depression or anxiety?<br>
+                                    <span @click="toggleYesNo('anxiety1', 'yes')" :class="{ 'selected' : formData.anxiety1 == 'yes'}">Yes</span>
+                                    <span @click="toggleYesNo('anxiety1', 'no')" :class="{ 'selected' : formData.anxiety1 == 'no'}">No</span>
+                                </p>
+                            </div>
 
-                                        <ul class="ac-custom ac-radio ac-fill">
-                                            <li>
-                                                <input id="yesBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="yes" type="radio">
-                                                <label for="yesBlood">Yes</label>
-                                            </li>
-                                            <li>
-                                                <input id="noBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="no" type="radio">
-                                                <label for="noBlood">No</label>
-                                            </li>
-                                            <li>
-                                                <input id="dontKnowBlood" v-model="formData.sicknessSubOptions.blood" name="bloodSub" value="dontKnow" type="radio">
-                                                <label for="dontKnowBlood">I Don't Know</label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li>
-                                    <input id="cholesterol" v-model="formData.sicknessSub" value="cholesterol" type="checkbox">
-                                    <label for="cholesterol">High Cholesterol?</label>
-                                </li>
-                                <li v-show="hasSickness('cholesterol')">
-                                    <div class="subQ">
-                                        Is your cholesterol currently in the normal range?<br>
+                            <div class="subQ" v-show="formData.anxiety == 'yes'">
+                                <p class="subtitle">
+                                    Have you had more than two episodes of depression or anxiety that required treatment in the past two years?<br>
+                                    <span @click="toggleYesNo('anxiety2', 'yes')" :class="{ 'selected' : formData.anxiety2 == 'yes'}">Yes</span>
+                                    <span @click="toggleYesNo('anxiety2', 'no')" :class="{ 'selected' : formData.anxiety2 == 'no'}">No</span>
+                                </p>
+                            </div>
 
-                                        <ul class="ac-custom ac-radio ac-fill">
-                                            <li>
-                                                <input id="yescholesterol" v-model="formData.sicknessSubOptions.cholesterol" name="cholesterolSub" value="yes" type="radio">
-                                                <label for="yescholesterol">Yes</label>
-                                            </li>
-                                            <li>
-                                                <input id="nocholesterol" v-model="formData.sicknessSubOptions.cholesterol" name="cholesterolSub" value="no" type="radio">
-                                                <label for="nocholesterol">No</label>
-                                            </li>
-                                            <li>
-                                                <input id="dontKnowcholesterol" v-model="formData.sicknessSubOptions.cholesterol" name="cholesterolSub" value="dontKnow" type="radio">
-                                                <label for="dontKnowcholesterol">I Don't Know</label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li>
-                                    <input id="anxiety" v-model="formData.sicknessSub" value="anxiety" type="checkbox">
-                                    <label for="anxiety">Depression or Anxiety?</label>
-                                </li>
-                            </ul>
+                            <div class="subQ" v-show="formData.anxiety == 'yes'">
+                                <p class="subtitle">
+                                    Has your depression or anxiety ever caused you to become unemployed?<br>
+                                    <span @click="toggleYesNo('anxiety3', 'yes')" :class="{ 'selected' : formData.anxiety3 == 'yes'}">Yes</span>
+                                    <span @click="toggleYesNo('anxiety3', 'no')" :class="{ 'selected' : formData.anxiety3 == 'no'}">No</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
 
                     <div :class="[formSectionsClass.q5]" v-show="formSections.q5">
                         <div class="fs-fields fs-anim-upper">
-                            Are you currently getting paid to engage in any of the following occupations?<br>
+                            <p class="subtitle nomargin">Are you currently getting paid to engage in any of the following occupations?</p>
                             <i class="titleInfo">Check all that apply.</i>
                         </div>
 
                         <div class="fs-fields fs-anim-lower">
-                            <ul class="ac-custom ac-checkbox ac-boxfill">
+                            <ul class="ac-custom ac-boxfill">
                                 <li>
                                     <input id="pilot" v-model="formData.occupation" value="pilot" type="checkbox">
                                     <label for="pilot">Commercial Pilot</label>
@@ -313,12 +318,12 @@
 
                     <div :class="[formSectionsClass.q6]" v-show="formSections.q6">
                         <div class="fs-fields fs-anim-upper">
-                            Do you, or are you planning to engage in any of the following activities?<br>
+                            <p class="subtitle nomargin">Do you, or are you planning to engage in any of the following activities?</p>
                             <i class="titleInfo">Check all that apply.</i>
                         </div>
 
                         <div class="fs-fields fs-anim-lower">
-                            <ul class="ac-custom ac-checkbox ac-boxfill">
+                            <ul class="ac-custom ac-boxfill">
                                 <li>
                                     <input id="skydiving" v-model="formData.activities" value="skydiving" type="checkbox">
                                     <label for="skydiving">Skydiving or Base Jumping</label>
@@ -354,18 +359,20 @@
                             </ul>
                         </div>
                     </div>
+
+                     <button class="btn btn-primary btn-lg hidden-xs" @click="moveTo(nextQ)">Next</button>
                 </form>
             </div>
         </div>
 
-        <div class="fs-controls" v-show="formActive">
-            <h2>Lifesprung</h2>
+        <div class="controls" v-show="formActive">
+            <h2 class="title"><img :src="logo" class="logo"> Lifesprung</h2>
 
-            <div class="submit-wrap">
-                <button class="button" @click="moveTo(nextQ)">Next</button>
+            <div class="submit">
+                <button class="btn btn-primary btn-lg visible-xs" @click="moveTo(nextQ)">Next</button>
             </div>
 
-            <nav class="nav-dots">
+            <nav class="dots">
                 <button :class="[formSections.q1 ? 'current-dot' : 'disabled']" @click="moveTo('1')"></button>
                 <button :class="[formSections.q2 ? 'current-dot' : 'disabled']" @click="moveTo('2')"></button>
                 <button :class="[formSections.q3 ? 'current-dot' : 'disabled']" @click="moveTo('3')"></button>
@@ -374,7 +381,7 @@
                 <button :class="[formSections.q6 ? 'current-dot' : 'disabled']" @click="moveTo('6')"></button>
             </nav>
 
-            <span class="numbers">
+            <span class="pages">
                 <span>{{ currentQ }}</span>/<span>{{ totalQ }}</span>
             </span>
         </div>
@@ -386,7 +393,8 @@
     export default {
         data() {
             return {
-                nlform: null,
+                v1: false,
+                qualified: true,
                 formActive: false,
                 formData: {
                     age: 35,
@@ -396,14 +404,23 @@
                     work: 'no',
                     drink: 'no',
                     violation: 'no',
-                    sickness: [],
-                    sicknessRelative: [],
-                    sicknessSub: [],
-                    sicknessSubOptions: {
-                        blood: null,
-                        cholesterol: null,
-                        anxiety: null
-                    },
+                    cancer: null,
+                    diabetes: null,
+                    sclerosis: null,
+                    kidney: null,
+                    heart: null,
+                    liver: null,
+                    stroke: null,
+                    heartR: null,
+                    cancerR: null,
+                    blood: null,
+                    cholesterol: null,
+                    anxiety: null,
+                    blood1: null,
+                    cholesterol1: null,
+                    anxiety1: null,
+                    anxiety2: null,
+                    anxiety3: null,
                     occupation: [],
                     activities: []
                 },
@@ -435,6 +452,10 @@
         },
 
         methods: {
+            toggleYesNo(data, value) {
+                this.formData[data] = value;
+            },
+
             moveTo(target) {
                 let t_currentQ = 'q' + this.currentQ;
 
@@ -456,21 +477,21 @@
                     this.formSections[t_targetQ] = true;
 
                     this.formSectionsClass[t_targetQ] = 'fs-showing';
-                }, 300);
+                }, 400);
 
                 setTimeout(() => {
                     this.formSections[t_currentQ] = false;
 
                     this.currentQ = target;
 
-                    this.nextQ = this.currentQ + 1;
+                    this.nextQ = parseInt(this.currentQ) + 1;
 
                     if (this.totalQ == target) {
                         this.nextQ = 'summary';
 
                         return;
                     }
-                }, 500);
+                }, 400);
             },
 
             activateForm() {

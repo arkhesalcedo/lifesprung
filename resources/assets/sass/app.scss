@@ -1,9 +1,461 @@
-
+@import "~normalize.css/normalize.css";
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import url("https://fonts.googleapis.com/css?family=Barlow+Condensed:100,400,600");
 
 // Variables
 @import "variables";
 
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+* {
+	outline: none;
+}
+
+body, html {
+	min-height: 100%;
+	background: $body-bg;
+}
+
+.front {
+	.full-height {
+	    height: 100vh;
+	}
+
+	.flex-center {
+	    align-items: center;
+	    display: flex;
+	    justify-content: center;
+	}
+
+	.logo {
+		height: 50px;
+		animation: normalSepia 10s ease infinite alternate;
+	}
+
+	@keyframes normalSepia {
+		0% {
+		    filter: grayscale(1);
+		}
+		40% {
+			filter: grayscale(0);
+		}
+		50% {
+			filter: sepia(0);
+		}
+		100% {
+		    filter: sepia(1);
+		}
+	}
+
+	.title {
+		font-size: 7rem;
+		font-weight: 100;
+		margin: 0 0 4rem;
+		color: $brand-primary;
+		line-height: 120%;
+		font-family: $mainFont;
+	}
+
+	.subtitle {
+	    font-size: 2.5rem;
+	    margin: 0 0 4rem;
+	    font-weight: 100;
+	    line-height: 120%;
+	    font-family: $mainFont;
+	}
+
+	.btn {
+		font-size: 2rem;
+		font-family: $mainFont;
+		font-weight: 100;
+	}
+
+	.controls {
+		z-index: 999;
+
+		.title, .pages, .submit {
+			padding: 20px;
+    		margin: 0px;
+		}
+
+		.title {
+			position: fixed;
+		    top: 0px;
+		    left: 0px;
+		    color: $brand-primary;
+		    font-size: 3rem;
+		    background: $body-bg;
+    		width: 100%;
+    		box-shadow: 0 0 5px $fontColor;
+
+		    .logo {
+		    	height: 3rem;
+    			vertical-align: baseline;
+		    }
+		}
+
+		.submit {
+			position: fixed;
+			bottom: 0px;
+			right: 0px;
+		}
+
+		.pages {
+			position: fixed;
+		    top: 0;
+		    right: 0;
+		    overflow: hidden;
+		    color: rgba(0, 0, 0, 0.4);
+		    font-weight: 700;
+		    font-size: 2rem;
+		    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		    cursor: default;
+		    text-align: right;
+		}
+
+		.dots {
+			position: fixed;
+		    top: 50%;
+		    right: 20px;
+		    left: auto;
+		    transform: translateY(-50%);
+
+		    button {
+		    	cursor: pointer;
+			    position: relative;
+			    display: block;
+			    padding: 0;
+			    margin: 16px 0;
+			    width: 16px;
+			    height: 16px;
+			    border-radius: 50%;
+			    background: transparent;
+			    transition: transform 0.3s ease, opacity 0.3s ease;
+			    border: none;
+		    	background: $brand-primary;
+
+			    &.disabled {
+				    opacity: 0.3;
+				}
+
+			    &.current-dot {
+				    transform: perspective(1000px) rotate3d(0, 1, 0, 180deg);
+				    pointer-events: none;
+				}
+		    }
+		}
+	}
+
+	/* general style for the form */
+	.theForm {
+		width: 100%;
+		padding: 15vh 0px;
+		font-size: 2.5rem;
+		line-height: 3rem;
+		color: $fontColor;
+		font-family: $mainFont;
+		min-height: 100vh;
+		position: relative;
+
+		.btn {
+			position: absolute;
+    		bottom: 20vh;
+    		right: 20px;
+		}
+	}
+
+	.btn-lg {
+		text-transform: uppercase;
+    	letter-spacing: 1px;
+	}
+
+	.theForm ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	/* normalize the input elements, make them look like everything else */
+	.theForm input[type="text"],
+	.theForm select {
+		border: none;
+		background: transparent;
+		font-family: inherit;
+		font-size: inherit;
+		color: inherit;
+		font-weight: inherit;
+		line-height: inherit;
+		display: inline-block;
+		padding: 0;
+		margin: 0;
+		appearance: none;
+		font-weight: bold;
+	}
+
+	.theForm input[type="text"]:focus, .theForm select:focus {
+		outline: none;
+	}
+
+	/* the toggle is the visible part in the form */
+	.theForm input[type="text"],
+	.theForm select  {
+		line-height: inherit;
+		display: inline-block;
+		color: $brand-success;
+		cursor: pointer;
+		border-bottom: 1px dashed $brand-success;
+		border-radius: 0px;
+	}
+
+	/* custom placeholder color */
+	input[type="text"]::-webkit-input-placeholder {
+		color: rgba(255,255,255,0.8);
+	}
+
+	input[type="text"]:active::-webkit-input-placeholder ,
+	input[type="text"]:focus::-webkit-input-placeholder {
+		color: rgba(255,255,255,0.2);
+	}
+
+	input[type="text"]::-moz-placeholder {
+		color: rgba(255,255,255,0.8);
+	}
+
+	input[type="text"]:active::-moz-placeholder,
+	input[type="text"]:focus::-moz-placeholder {
+		color: rgba(255,255,255,0.2);
+	}
+
+	input[type="text"]:-ms-input-placeholder {  
+		color: rgba(255,255,255,0.8);
+	}
+
+	input[type="text"]:active::-ms-input-placeholder ,
+	input[type="text"]:focus::-ms-input-placeholder {
+		color: rgba(255,255,255,0.2);
+	}
+
+	.fs-showing {
+		animation: animFadeIn 0.5s;
+
+		@keyframes animFadeIn {
+			0% { opacity: 0; }
+			100% { opacity: 1; }
+		}
+
+		.fs-fields {
+			animation: animMove 0.5s;
+
+			@keyframes animMove {
+				from { top: 100px; }
+			}
+		}
+	}
+
+	.fs-anim-upper {
+		margin-bottom: 40px;
+	}
+
+	.fs-hiding .fs-anim-upper, .fs-hiding .fs-anim-lower {
+		animation: animHideNext 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+	}
+
+	.fs-hiding .fs-anim-lower {
+		animation-delay: 0.1s;
+	}
+
+	@keyframes animHideNext {
+		to { opacity: 0; -webkit-transform: translate3d(0, -500px, 0); transform: translate3d(0, -500px, 0); }
+	}
+
+	.fs-showing .fs-anim-upper, .fs-showing .fs-anim-lower {
+		animation: animShowNext 0.5s cubic-bezier(0.7,0,0.3,1) both 0.15s;
+	}
+
+	.fs-showing .fs-anim-lower {
+		animation-delay: 0.25s;
+	}
+
+	@-webkit-keyframes animShowNext {
+		from { opacity: 0; -webkit-transform: translate3d(0,500px,0); }
+	}
+
+	@keyframes animShowNext {
+		from { opacity: 0; -webkit-transform: translate3d(0,500px,0); transform: translate3d(0,500px,0); }
+	}
+
+	.ac-custom li {
+		position: relative;
+	}
+
+	.ac-custom label {
+		display: inline-block;
+		position: relative;
+		font-size: 2.5rem;
+		padding: 0 0 0 35px;
+		vertical-align: top;
+		color: $fontColor;
+		cursor: pointer;
+		line-height: 30px;
+		font-weight: 100;
+	}
+
+	.ac-custom input[type="checkbox"],
+	.ac-custom input[type="radio"],
+	.ac-custom label::before {
+		width: 28px;
+		height: 28px;
+		left: 0;
+		position: absolute;
+		cursor: pointer;
+	}
+
+	.ac-custom input[type="checkbox"],
+	.ac-custom input[type="radio"] {
+		opacity: 0;
+		appearance: none;
+		display: inline-block;
+		vertical-align: middle;
+		z-index: 100;
+	}
+
+	.ac-custom label::before {
+		content: '';
+		border: 1px solid $fontColor;
+		transition: opacity 0.3s;
+	}
+
+	.ac-radio label::before {
+		border-radius: 50%;
+	}
+
+	.ac-custom input[type="checkbox"]:checked + label::before,
+	.ac-custom input[type="radio"]:checked + label::before {
+		opacity: 0.8;
+	}
+
+	/* General SVG and path styles */
+
+	.ac-custom svg {
+		position: absolute;
+		width: 28px;
+		height: 28px;
+		top: 0px;
+		left: 0px;
+		pointer-events: none;
+	}
+
+	.ac-custom svg path {
+		stroke: $brand-success;
+		stroke-width: 13px;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		fill: none;
+	}
+
+	/* Specific input, SVG and path styles */
+
+	/* Circle */
+	.ac-circle input[type="checkbox"],
+	.ac-circle input[type="radio"],
+	.ac-circle label::before {
+		width: 30px;
+		height: 30px;
+		margin-top: -15px;
+		left: 10px;
+		position: absolute;
+	}
+
+	.ac-circle label::before {
+		background-color: $fontColor;
+		border: none;
+	}
+
+	.ac-circle svg {
+		width: 70px;
+		height: 70px;
+		margin-top: -35px;
+		left: -10px;
+	}
+
+	.ac-circle svg path {
+		stroke-width: 5px;
+	} 
+
+	/* Box Fill */
+	.ac-boxfill svg path {
+		stroke-width: 8px;
+	} 
+
+	/* Swirl */
+	.ac-swirl svg path {
+		stroke-width: 8px;
+	}
+
+	.titleInfo {
+		font-size: 1.5rem;
+		color: $brand-info;
+	}
+
+	.text-success {
+		color: $brand-info;
+	}
+
+	.subQ {
+		margin-left: 5vh;
+		margin-bottom: 20px;
+
+		.subtitle {
+			font-size: 2.5rem;
+		}
+
+	    label {
+	    	font-size: 1.5rem;
+	    }
+
+	    ul {
+	    	margin: 0px 0px 20px 35px;
+
+	    	li {
+	    		display: inline-block;
+	    		margin-right: 5px;
+	    	}
+		}
+	}
+
+	.nomargin {
+		margin: 0px;
+	}
+
+	.options, .subQ {
+		span {
+			background: rgba(51,51,51,0.1);
+		    padding: 10px 20px;
+		    margin-right: 10px;
+		    cursor: pointer;
+		    transition: background 1s;
+		    margin-top: 10px;
+    		display: inline-block;
+    		text-transform: uppercase;
+    		line-height: 100%;
+
+		    &:hover, &.selected {
+		    	background: $brand-success;
+		    	color: $white;
+		    }
+		}
+	}
+
+	@media only screen and (max-width: 480px) {
+		.controls {
+			.title, .pages, .submit {
+				padding: 10px;
+			}
+
+			.dots {
+				right: 10px;
+			}
+		}
+	}
+}
