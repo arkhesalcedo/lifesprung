@@ -99,6 +99,12 @@ body, html {
 			position: fixed;
 			bottom: 0px;
 			right: 0px;
+			background: $brand-success;
+			width: 100%;
+
+			.prev {
+				margin-right: 10px;
+			}
 		}
 
 		.pages {
@@ -162,6 +168,10 @@ body, html {
 			position: absolute;
     		bottom: 20vh;
     		right: 20px;
+
+    		&.prev {
+    			right: 100px;
+    		}
 		}
 	}
 
@@ -191,6 +201,19 @@ body, html {
 		margin: 0;
 		appearance: none;
 		font-weight: bold;
+	}
+
+	.afterSelect {
+		border: 1px solid $brand-success;
+	    border-right: 0;
+	    border-top: 0;
+	    display: inline-block;
+	    pointer-events: none;
+	    transform: rotate(-45deg);
+	    height: .2em;
+	    width: .2em;
+	    vertical-align: middle;
+	    margin-left: 5px;
 	}
 
 	.theForm input[type="text"]:focus, .theForm select:focus {
@@ -439,6 +462,7 @@ body, html {
     		display: inline-block;
     		text-transform: uppercase;
     		line-height: 100%;
+    		border-radius: 4px;
 
 		    &:hover, &.selected {
 		    	background: $brand-success;

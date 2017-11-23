@@ -33,7 +33,7 @@
 
                             <select v-model="formData.age" name="age">
                                 <option :value="n + 17" v-for="n in 33">{{ n + 17 }}</option>   
-                            </select>
+                            </select><span class="afterSelect"></span>
 
                             years old and I weight about <select v-model="formData.weight" name="weight">
                                 <option value="60">60</option>
@@ -105,7 +105,7 @@
                                 <option value="390">390</option>
                                 <option value="395">395</option>
                                 <option value="400">400</option>   
-                            </select> pounds.</p>
+                            </select><span class="afterSelect"></span> pounds.</p>
                         </div>
 
                         <div class="fs-fields fs-anim-lower">
@@ -113,11 +113,11 @@
 
                             <select v-model="formData.feet" name="feet">
                                 <option :value="n + 3" v-for="n in 8">{{ n + 3 }}</option>   
-                            </select> feet and
+                            </select><span class="afterSelect"></span> feet and
 
                             <select v-model="formData.inches" name="inches">
                                 <option :value="n + 1" v-for="n in 10">{{ n + 1 }}</option>   
-                            </select> inches tall.</p>
+                            </select><span class="afterSelect"></span> inches tall.</p>
 
                             <p class="subtitle">I currently work
 
@@ -125,7 +125,7 @@
                                 <option value="yes">more than</option>
                                 <option value="no">less than</option> 
                                 <option value="about">about</option> 
-                            </select> thirty hours per week.</p>
+                            </select><span class="afterSelect"></span> thirty hours per week.</p>
                         </div>
                     </div>
 
@@ -136,33 +136,33 @@
                             <select v-model="formData.drink" name="drink">
                                 <option value="yes">more</option>
                                 <option value="no">less</option>
-                            </select> than 21 drinks per week.</p>
+                            </select><span class="afterSelect"></span> than 21 drinks per week.</p>
 
                             <p class="subtitle">I
 
                             <select v-model="formData.violation" name="violation">
                                 <option value="yes">had</option>
                                 <option value="no">didn’t have</option> 
-                            </select> more than one moving violation in the past 12 months.</p>
+                            </select><span class="afterSelect"></span> more than one moving violation in the past 12 months.</p>
                         </div>
 
                         <div class="fs-fields fs-anim-lower">
                             <p class="subtitle">Have you ever been diagnosed or treated for:</p>
 
                             <p class="options">
+                                Cancer<br>
                                 <span @click="toggleYesNo('cancer', 'yes')" :class="{ 'selected' : formData.cancer == 'yes'}">Yes</span>
                                 <span @click="toggleYesNo('cancer', 'no')" :class="{ 'selected' : formData.cancer == 'no'}">No</span>
-                                Cancer
                             </p>
                             <p class="options">
+                                Diabetes<br>
                                 <span @click="toggleYesNo('diabetes', 'yes')" :class="{ 'selected' : formData.diabetes == 'yes'}">Yes</span>
                                 <span @click="toggleYesNo('diabetes', 'no')" :class="{ 'selected' : formData.diabetes == 'no'}">No</span>
-                                Diabetes
                             </p>
                             <p class="options">
+                                Sclerosis<br>
                                 <span @click="toggleYesNo('sclerosis', 'yes')" :class="{ 'selected' : formData.sclerosis == 'yes'}">Yes</span>
                                 <span @click="toggleYesNo('sclerosis', 'no')" :class="{ 'selected' : formData.sclerosis == 'no'}">No</span>
-                                Sclerosis
                             </p>
                         </div>
                     </div>
@@ -172,19 +172,19 @@
                             <p class="subtitle">Have you ever been diagnosed or treated for:</p>
 
                             <p class="options">
+                                Kidney Disease?<br>
                                 <span @click="toggleYesNo('kidney', 'yes')" :class="{ 'selected' : formData.kidney == 'yes'}">Yes</span>
                                 <span @click="toggleYesNo('kidney', 'no')" :class="{ 'selected' : formData.kidney == 'no'}">No</span>
-                                Kidney Disease?
                             </p>
                             <p class="options">
+                                Heart Disease?<br>
                                 <span @click="toggleYesNo('heart', 'yes')" :class="{ 'selected' : formData.heart == 'yes'}">Yes</span>
                                 <span @click="toggleYesNo('heart', 'no')" :class="{ 'selected' : formData.heart == 'no'}">No</span>
-                                Heart Disease?
                             </p>
                             <p class="options">
+                                Liver Disease?<br>
                                 <span @click="toggleYesNo('liver', 'yes')" :class="{ 'selected' : formData.liver == 'yes'}">Yes</span>
                                 <span @click="toggleYesNo('liver', 'no')" :class="{ 'selected' : formData.liver == 'no'}">No</span>
-                                Liver Disease?
                             </p>
                         </div>
 
@@ -192,19 +192,19 @@
                             <p class="subtitle">Have 2 or more of your parents or siblings been diagnosed before the age of sixty with:</p>
 
                             <p class="options">
+                                Stroke?<br>
                                 <span @click="toggleYesNo('stroke', 'yes')" :class="{ 'selected' : formData.stroke == 'yes'}">Yes</span>
                                 <span @click="toggleYesNo('stroke', 'no')" :class="{ 'selected' : formData.stroke == 'no'}">No</span>
-                                Stroke?
                             </p>
                             <p class="options">
+                                Heart Disease?<br>
                                 <span @click="toggleYesNo('heartR', 'yes')" :class="{ 'selected' : formData.heartR == 'yes'}">Yes</span>
                                 <span @click="toggleYesNo('heartR', 'no')" :class="{ 'selected' : formData.heartR == 'no'}">No</span>
-                                Heart Disease?
                             </p>
                             <p class="options">
+                                Cancer?<br>
                                 <span @click="toggleYesNo('cancerR', 'yes')" :class="{ 'selected' : formData.cancerR == 'yes'}">Yes</span>
                                 <span @click="toggleYesNo('cancerR', 'no')" :class="{ 'selected' : formData.cancerR == 'no'}">No</span>
-                                Cancer?
                             </p>
                         </div>
                     </div>
@@ -360,7 +360,9 @@
                         </div>
                     </div>
 
-                     <button class="btn btn-primary btn-lg hidden-xs" @click="moveTo(nextQ)">Next</button>
+                    <button class="btn btn-primary btn-lg hidden-xs prev" @click="moveTo(prevQ)" v-show="prevQ">Prev</button>
+
+                    <button class="btn btn-primary btn-lg hidden-xs" @click="moveTo(nextQ)">Next</button>
                 </form>
             </div>
         </div>
@@ -368,8 +370,10 @@
         <div class="controls" v-show="formActive">
             <h2 class="title"><img :src="logo" class="logo"> Lifesprung</h2>
 
-            <div class="submit">
-                <button class="btn btn-primary btn-lg visible-xs" @click="moveTo(nextQ)">Next</button>
+            <div class="submit clearfix">
+                <button class="btn btn-primary btn-lg visible-xs pull-right" @click="moveTo(nextQ)">Next</button>
+
+                <button class="btn btn-primary btn-lg visible-xs prev pull-right" @click="moveTo(prevQ)" v-show="prevQ">Prev</button>
             </div>
 
             <nav class="dots">
@@ -441,6 +445,7 @@
                     q6: null,
                 },
                 totalQ: 6,
+                prevQ: 0,
                 nextQ: 2,
                 currentQ: 1,
                 summary: false
@@ -483,6 +488,8 @@
                     this.formSections[t_currentQ] = false;
 
                     this.currentQ = target;
+
+                    this.prevQ = this.currentQ - 1 > 0 ? this.currentQ - 1 : 0;
 
                     this.nextQ = parseInt(this.currentQ) + 1;
 
