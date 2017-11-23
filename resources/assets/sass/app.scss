@@ -100,6 +100,8 @@ body, html {
 			bottom: 0px;
 			right: 0px;
 			background: $brand-success;
+			background: -webkit-linear-gradient(to right, $brand-primary, $brand-success);
+			background: linear-gradient(to right, $brand-primary, $brand-success);
 			width: 100%;
 
 			.prev {

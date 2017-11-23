@@ -479,6 +479,8 @@
                 let t_targetQ = 'q' + target;
 
                 setTimeout(() => {
+                    scrollTo(document.body, 0, 100);
+                    
                     this.formSections[t_targetQ] = true;
 
                     this.formSectionsClass[t_targetQ] = 'fs-showing';
