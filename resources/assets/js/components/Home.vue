@@ -6,7 +6,7 @@
                     <img :src="logo" class="logo">
 
                     <h1 class="title">
-                        Lifesprung
+                        Lifesprung <i class="material-icons">&#xE87C;</i>
                     </h1>
 
                     <p class="subtitle" v-if="summary">
