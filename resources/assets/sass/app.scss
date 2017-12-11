@@ -114,9 +114,8 @@ body, html {
 }
 
 input[type="text"], select {
-	border: none;
-	border-bottom: 1px dashed $brand-info;
-    border-radius: 0;
+	border: 3px dashed $brand-info;
+    border-radius: 3px;
 
 	background: transparent;
 
@@ -126,7 +125,7 @@ input[type="text"], select {
 	line-height: inherit;
 	color: $brand-info;
 
-	padding: 0;
+	padding: 0px 20px;
 	appearance: none;
     display: block;   
     cursor: pointer;
@@ -152,9 +151,10 @@ select {
     width: 1em;
     position: relative;
     top: -17px;
+    left: -30px;
 }
 
-button {
+button, a.button {
 	font-family: $mainFont;
 
 	&:focus {
@@ -166,13 +166,14 @@ button {
 	margin: 0 0 4rem;
 
 	a {
-		border: 1px solid $fontColor;
+		border: 1px solid #ccc;
 	    padding: 10px;
 	    display: inline-block;
 	    margin-right: 10px;
 	    border-radius: 3px;
-	    color: $fontColor;
+	    color: #ccc;
 	    text-align: center;
+	    cursor: pointer;
 
 	    span {
 	    	font-size: 7rem;
@@ -184,6 +185,52 @@ button {
 	    	text-decoration: none;
 	    }
 	}
+
+	&.smaller {
+		a {
+			padding: 5px;
+		}
+	}
+}
+
+.checkList {
+	margin: 0 0 2rem;
+
+	a {
+		display: inline-block;
+		padding: 5px;
+		font-size: 2rem;
+		margin: 0 5px 5px 0px;
+		cursor: pointer;
+
+		span {
+			opacity: 0;
+			display: inline-block;
+			margin-left: 10px;
+		}
+
+		&.selected {
+			background: $brand-info;
+			text-decoration: none;
+			color: $white;
+
+			span {
+				opacity: 1;
+			}
+		}
+	}
+}
+
+.caption {
+	color: $brand-info;
+}
+
+.smallMargin {
+	margin: 0 0 2rem;
+}
+
+.resultTitle {
+	font-size: 4rem;
 }
 
 // animations
