@@ -115,12 +115,12 @@
 
                                         <transition name="light-speed-in" appear>
                                             <div>
-                                                <button class="btn btn-lg btn-primary" @click.prevent="proceed('height', 18, 300)">OK</button>
+                                                <button class="btn btn-lg btn-primary" @click.prevent="proceed('heightF', 18, 300)">OK</button>
                                             </div>
                                         </transition>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'height'" key="height">
+                                    <div class="questions" v-else-if="currentQ === 'heightF' || currentQ === 'heightI'" key="heightF">
                                         <h2 class="ask">What is your height?</h2>
 
                                         <!-- <select v-model="formData.height" ref="height" @change="proceed('drink', 22, 300)" :class="{ 'selected animated flash': formData.height !== null}">
@@ -576,15 +576,11 @@
             swipeHandler(param) {
                 return function(direction, event) {
                     if (direction == 'top' || direction == 'left') {
-                        if (param !== 'activities') {
-                            this.getNext();
-                        }
+                        this.getNext();
                     }
 
                     if (direction == 'bottom' || direction == 'right') {
-                        if (param !== 'name') {
-                            this.getPrev();
-                        }
+                        this.getPrev();
                     }
                 }.bind(this);
             },
@@ -595,6 +591,10 @@
                 let nextOne = false;
 
                 let current = this.currentQ;
+
+                if (current === 'activities') {
+                    return false;
+                }
 
                 Object.keys(this.formData).forEach(key => {
                     if (nextOne) {
@@ -613,6 +613,10 @@
 
             getPrev() {
                 let prev = null;
+
+                if (this.currentQ === 'name') {
+                    return false;
+                }
 
                 Object.keys(this.formData).forEach(key => {
                     if (key == this.currentQ) {
@@ -736,12 +740,6 @@
                 }
 
                 this.occupationsTriggered = true;
-            },
-            
-            trigger(reference) {
-                console.log(reference);
-
-                console.log(this.$refs.age.click());
             },
 
             scrollValue(event, data, min, max, step) {

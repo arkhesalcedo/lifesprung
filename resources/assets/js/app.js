@@ -11,7 +11,9 @@ window.Vue = require('vue');
 
 import Vue2TouchEvents from 'vue2-touch-events';
 
-Vue.use(Vue2TouchEvents);
+Vue.use(Vue2TouchEvents, {
+	swipeTolerance: 100
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
