@@ -117,7 +117,7 @@ body, html {
 #okButton {
 	position: absolute;
 	right: 24px;
-    bottom: 49px;
+    bottom: 10px;
 
     .btn {
     	font-size: 6rem;
@@ -260,6 +260,10 @@ button, a.button {
     width: 20%;
     border: none;
     padding: 0px !important;
+}
+
+.theQ {
+	padding-top: 20vh;
 }
 
 // animations

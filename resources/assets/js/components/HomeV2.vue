@@ -3,7 +3,7 @@
         <div class="container">
             <transition name="flipX" mode="out-in">
                 <template>
-                    <div class="row flex-center full-height" v-if="formActive" key="form" v-touch:swipe="swipeHandler(currentQ)">
+                    <div class="row full-height theQ" v-if="formActive" key="form" v-touch:swipe="swipeHandler(currentQ)">
                         <div class="col-sm-8 col-sm-offset-2">
                             <transition name="fade" mode="out-in">
                                     <div class="questions" v-if="currentQ === 'name'" key="name">
