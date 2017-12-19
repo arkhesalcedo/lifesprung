@@ -194,7 +194,7 @@ button, a.button {
 	    	font-size: 7rem;
 	    }
 
-	    &:hover, &.selected {
+	    &.selected {
 	    	color: $brand-info;
 	    	border: 1px solid $brand-info;
 	    	text-decoration: none;
