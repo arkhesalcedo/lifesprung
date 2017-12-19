@@ -19,6 +19,7 @@ body, html {
 
 .full-height {
     height: 100vh;
+    overflow: hidden;
 }
 
 .flex-center {
@@ -113,7 +114,17 @@ body, html {
 	}
 }
 
-input[type="text"], select {
+#okButton {
+	position: absolute;
+	right: 24px;
+    bottom: 49px;
+
+    .btn {
+    	font-size: 6rem;
+    }
+}
+
+input[type="text"], input[type="number"], .halfLabel {
 	border: 3px dashed $brand-info;
     border-radius: 3px;
 
@@ -122,7 +133,6 @@ input[type="text"], select {
 	font-family: inherit;
 	font-size: 7rem;
 	font-weight: bold;
-	line-height: inherit;
 	color: $brand-info;
 
 	padding: 0px 20px;
@@ -135,9 +145,14 @@ input[type="text"], select {
     width: 100%;
 }
 
+
+.selectWrapper {
+	position: relative;
+}
+
 select {
-	display: inline-block;
-	width: 90%;
+	opacity: 0;
+	width: 100%;
 }
 
 .afterSelect {
@@ -147,11 +162,11 @@ select {
     display: inline-block;
     pointer-events: none;
     transform: rotate(-45deg);
-    height: 1em;
-    width: 1em;
-    position: relative;
-    top: -17px;
-    left: -30px;
+    height: 0.5em;
+    width: 0.5em;
+    position: absolute;
+    top: 30px;
+    right: 20px;
 }
 
 button, a.button {
@@ -233,8 +248,27 @@ button, a.button {
 	font-size: 4rem;
 }
 
+.half {
+	display: inline-block !important;
+	width: 20% !important;
+}
+
+.halfLabel {
+	display: inline-block !important;
+	font-size: 7rem;
+	margin-right: 10px;
+    width: 20%;
+    border: none;
+    padding: 0px !important;
+}
+
 // animations
 
+.animated {
+	&.flash {
+		animation-duration: 0.3s;
+	}
+}
 @keyframes flipXOut {
 	from {
     	transform: perspective(400px);
@@ -343,4 +377,42 @@ button, a.button {
 .light-speed-in-enter-active {
   	animation: lightInSpeed 0.5s;
   	animation-timing-function: ease-in;
+}
+
+.fade-enter-active, .fade-leave-active {
+  	transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  	opacity: 0
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+	input[type="text"], input[type="number"] {
+		font-size: 4rem;
+	}
+
+	#okButton .btn {
+		font-size: 2.3rem;
+	}
+
+	.halfLabel {
+		width: auto !important;
+		font-size: 3rem;
+	}
+
+	.half {
+		width: 25% !important;
+	}
+
+	.ask {
+		&.smallest {
+			font-size: 1.5rem;
+		}
+	}
+
+	.checkList {
+		a {
+			font-size: 1.5rem;
+		}
+	}
 }

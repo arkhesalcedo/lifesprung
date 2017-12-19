@@ -3,38 +3,43 @@
         <div class="container">
             <transition name="flipX" mode="out-in">
                 <template>
-                    <div class="row flex-center full-height" v-if="formActive" key="form">
+                    <div class="row flex-center full-height" v-if="formActive" key="form" v-touch:swipe="swipeHandler(currentQ)">
                         <div class="col-sm-8 col-sm-offset-2">
-                            <transition name="fade-out-up" mode="out-in">
-                                <template>
-                                    <div class="questions" v-if="currentQ === 'name'" key="name" v-touch:swipe="swipeHandler('name')">
+                            <transition name="fade" mode="out-in">
+                                    <div class="questions" v-if="currentQ === 'name'" key="name">
                                         <h2 class="ask">Hi, what's your name?</h2>
 
-                                        <input type="text" v-model="formData.name" autofocus @keyup.enter="proceed('age', 10)">
+                                        <input type="text" v-model="formData.name" :autofocus="currentQ === 'name'" @keyup.enter="proceed('age', 10)">
 
                                         <transition name="light-speed-in">
-                                            <div v-if="formData.name !== null">
-                                                <button class="btn btn-lg btn-primary" @click.prevent="proceed('age', 10)">OK</button> or press <b>ENTER</b>
+                                            <div v-if="formData.name !== null" id="okButton">
+                                                <button class="btn btn-lg btn-primary" @click.prevent="proceed('age', 10)">OK</button>
                                             </div>
                                         </transition>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'age'" key="age" v-touch:swipe="swipeHandler('age')">
+                                    <div class="questions" v-else-if="currentQ === 'age'" key="age">
                                         <h2 class="ask">Hi <b class="text-primary">{{ formData.name }}</b>, what's your age?</h2>
 
-                                        <select v-model="formData.age" ref="age" @change="proceed('weight', 14, 1000)" :class="{ 'selected animated rubberBand': formData.age !== null}">
+                                        <!-- <select v-model="formData.age" ref="age" @change="proceed('weight', 14, 300)" :class="{ 'selected animated flash': formData.age !== null}">
                                             <option :value="n + 17" v-for="n in 33">{{ n + 17 }}</option>   
-                                        </select>
+                                        </select> -->
 
-                                        <span class="afterSelect"></span>
+                                        <input type="number" :autofocus="currentQ === 'age'" v-model="formData.age" min="18" max="50" @wheel="scrollValue('age', 18, 50, 1)">
+
+                                        <transition name="light-speed-in" appear>
+                                            <div>
+                                                <button class="btn btn-lg btn-primary" @click.prevent="proceed('weight', 14, 300)">OK</button>
+                                            </div>
+                                        </transition>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'weight'" key="weight" v-touch:swipe="swipeHandler('weight')">
+                                    <div class="questions" v-else-if="currentQ === 'weight'" key="weight">
                                         <h2 class="ask">What is your weight?</h2>
 
                                         <p class="subTitle">(pounds) Choose the closest value to your actual weight.</p>
 
-                                         <select v-model="formData.weight" ref="weight" @change="proceed('height', 18, 1000)" :class="{ 'selected animated rubberBand': formData.weight !== null}">
+                                         <!-- <select v-model="formData.weight" ref="weight" @change="proceed('height', 18, 300)" :class="{ 'selected animated flash': formData.weight !== null}">
                                                 <option value="60">60</option>
                                                 <option value="65">65</option>
                                                 <option value="70">70</option>
@@ -104,15 +109,21 @@
                                                 <option value="390">390</option>
                                                 <option value="395">395</option>
                                                 <option value="400">400</option>  
-                                        </select>
+                                        </select> -->
 
-                                        <span class="afterSelect"></span>
+                                        <input type="number" v-model="formData.weight" step="5" min="60" max="400" @wheel="scrollValue('weight', 60, 400, 5)">
+
+                                        <transition name="light-speed-in" appear>
+                                            <div>
+                                                <button class="btn btn-lg btn-primary" @click.prevent="proceed('height', 18, 300)">OK</button>
+                                            </div>
+                                        </transition>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'height'" key="height" v-touch:swipe="swipeHandler('height')">
+                                    <div class="questions" v-else-if="currentQ === 'height'" key="height">
                                         <h2 class="ask">What is your height?</h2>
 
-                                        <select v-model="formData.height" ref="height" @change="proceed('drink', 22, 1000)" :class="{ 'selected animated rubberBand': formData.height !== null}">
+                                        <!-- <select v-model="formData.height" ref="height" @change="proceed('drink', 22, 300)" :class="{ 'selected animated flash': formData.height !== null}">
                                             <option value="49">4’1”</option>
                                             <option value="50">4’2”</option>
                                             <option value="51">4’3”</option>
@@ -160,70 +171,111 @@
                                             <option value="93">7’9”</option>
                                             <option value="94">7’10”</option>
                                             <option value="95">7’11”</option>
-                                        </select>
+                                        </select> -->
 
-                                        <span class="afterSelect"></span>
+                                        <input class="half" type="number" v-model="formData.heightF" step="1" min="3" max="7" @wheel="scrollValue('heightF', 3, 7, 1)"> <span class="halfLabel">feet</span>
+
+                                        <input class="half" type="number" v-model="formData.heightI" step="1" min="1" max="11" @wheel="scrollValue('heightI', 1, 11, 1)"> <span class="halfLabel">inches</span>
+
+                                        <transition name="light-speed-in" appear>
+                                            <div>
+                                                <button class="btn btn-lg btn-primary" @click.prevent="proceed('drink', 22, 300)">OK</button>
+                                            </div>
+                                        </transition>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'drink'" key="drink" v-touch:swipe="swipeHandler('drink')">
+                                    <div class="questions" v-else-if="currentQ === 'drink'" key="drink">
                                         <h2 class="ask smaller">Do you drink more than 21 drinks per week?</h2>
 
                                         <p class="subTitle">(one beer, one glass of wine or an ounce of liquor are all considered one drink)</p>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('violation', 25, 1000, 'yes', 'drink')" :class="{ 'selected animated rubberBand': formData.drink === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('violation', 25, 1000, 'no', 'drink')" :class="{ 'selected animated rubberBand': formData.drink === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('violation', 25, 300, 'yes', 'drink')" :class="{ 'selected animated flash': formData.drink === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('violation', 25, 300, 'no', 'drink')" :class="{ 'selected animated flash': formData.drink === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'violation'" key="violation" v-touch:swipe="swipeHandler('violation')">
+                                    <div class="questions" v-else-if="currentQ === 'violation'" key="violation">
                                         <h2 class="ask smaller">Have you had more than one moving violation while driving in the past 12 months?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('work', 31, 1000, 'yes', 'violation')" :class="{ 'selected animated rubberBand': formData.violation === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('work', 31, 1000, 'no', 'violation')" :class="{ 'selected animated rubberBand': formData.violation === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('work', 31, 300, 'yes', 'violation')" :class="{ 'selected animated flash': formData.violation === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('work', 31, 300, 'no', 'violation')" :class="{ 'selected animated flash': formData.violation === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'work'" key="work" v-touch:swipe="swipeHandler('work')">
+                                    <div class="questions" v-else-if="currentQ === 'work'" key="work">
                                         <h2 class="ask smaller">Do you currently work full-time (at least 30 hours per week)?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('diabetes', 36, 1000, 'yes', 'work')" :class="{ 'selected animated rubberBand': formData.work === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('diabetes', 36, 1000, 'no', 'work')" :class="{ 'selected animated rubberBand': formData.work === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('diabetes', 36, 300, 'yes', 'work')" :class="{ 'selected animated flash': formData.work === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('diabetes', 36, 300, 'no', 'work')" :class="{ 'selected animated flash': formData.work === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'diabetes'" key="diabetes" v-touch:swipe="swipeHandler('diabetes')">
+                                    <div class="questions" v-else-if="currentQ === 'diabetes'" key="diabetes">
                                         <h2 class="ask smaller">Have you ever been diagnosed or treated for:</h2>
 
                                         <h2 class="ask">Diabetes?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('sclerosis', 40, 1000, 'yes', 'diabetes')" :class="{ 'selected animated rubberBand': formData.diabetes === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('sclerosis', 40, 1000, 'no', 'diabetes')" :class="{ 'selected animated rubberBand': formData.diabetes === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('sclerosis', 40, 300, 'yes', 'diabetes')" :class="{ 'selected animated flash': formData.diabetes === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('sclerosis', 40, 300, 'no', 'diabetes')" :class="{ 'selected animated flash': formData.diabetes === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'sclerosis'" key="sclerosis" v-touch:swipe="swipeHandler('sclerosis')">
+                                    <div class="questions" v-else-if="currentQ === 'sclerosis'" key="sclerosis">
                                         <h2 class="ask smaller">Have you ever been diagnosed or treated for:</h2>
 
                                         <h2 class="ask">Multiple Sclerosis?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('cancer', 43, 1000, 'yes', 'sclerosis')" :class="{ 'selected animated rubberBand': formData.sclerosis === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('cancer', 43, 1000, 'no', 'sclerosis')" :class="{ 'selected animated rubberBand': formData.sclerosis === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('cancer', 43, 300, 'yes', 'sclerosis')" :class="{ 'selected animated flash': formData.sclerosis === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('cancer', 43, 300, 'no', 'sclerosis')" :class="{ 'selected animated flash': formData.sclerosis === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'cancer'" key="cancer" v-touch:swipe="swipeHandler('cancer')">
+                                    <div class="questions" v-else-if="currentQ === 'cancer'" key="cancer">
                                         <h2 class="ask smaller">Have you ever been diagnosed or treated for:</h2>
 
                                         <h2 class="ask">Cancer?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('continue', 49, 1000, 'yes', 'cancer')" :class="{ 'selected animated rubberBand': formData.cancer === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('continue', 49, 1000, 'no', 'cancer')" :class="{ 'selected animated rubberBand': formData.cancer === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('kidney', 49, 300, 'yes', 'cancer')" :class="{ 'selected animated flash': formData.cancer === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('kidney', 49, 300, 'no', 'cancer')" :class="{ 'selected animated flash': formData.cancer === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                        </div>
+                                    </div>
+
+                                     <div class="questions" v-else-if="currentQ === 'kidney'" key="kidney">
+                                        <h2 class="ask smaller">Have you ever been diagnosed or treated for:</h2>
+
+                                        <h2 class="ask">Kidney Disease?</h2>
+
+                                        <div class="checkMark">
+                                            <a @click.prevent="proceed('heart', 55, 300, 'yes', 'kidney')" :class="{ 'selected animated flash': formData.kidney === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('heart', 55, 300, 'no', 'kidney')" :class="{ 'selected animated flash': formData.kidney === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                        </div>
+                                    </div>
+
+                                     <div class="questions" v-else-if="currentQ === 'heart'" key="heart">
+                                        <h2 class="ask smaller">Have you ever been diagnosed or treated for:</h2>
+
+                                        <h2 class="ask">Heart Disease?</h2>
+
+                                        <div class="checkMark">
+                                            <a @click.prevent="proceed('liver', 55, 300, 'yes', 'heart')" :class="{ 'selected animated flash': formData.heart === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('liver', 55, 300, 'no', 'heart')" :class="{ 'selected animated flash': formData.heart === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="questions" v-else-if="currentQ === 'liver'" key="liver">
+                                        <h2 class="ask smaller">Have you ever been diagnosed or treated for:</h2>
+
+                                        <h2 class="ask">Liver Disease?</h2>
+
+                                        <div class="checkMark">
+                                            <a @click.prevent="proceed('continue', 61, 300, 'yes', 'liver')" :class="{ 'selected animated flash': formData.liver === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('continue', 61, 300, 'no', 'liver')" :class="{ 'selected animated flash': formData.liver === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
@@ -232,171 +284,138 @@
 
                                         <transition name="light-speed-in">
                                             <div>
-                                                <button class="btn btn-lg btn-primary" @click.prevent="proceed('kidney', 49)">CONTINUE</button> or press <b>ENTER</b>
+                                                <button class="btn btn-lg btn-primary" @click.prevent="proceed('blood', 63)">CONTINUE</button> or press <b>ENTER</b>
                                             </div>
                                         </transition>
                                     </div>
 
-                                     <div class="questions" v-else-if="currentQ === 'kidney'" key="kidney" v-touch:swipe="swipeHandler('kidney')">
-                                        <h2 class="ask smaller">Have you ever been diagnosed or treated for:</h2>
-
-                                        <h2 class="ask">Kidney Disease?</h2>
-
-                                        <div class="checkMark">
-                                            <a @click.prevent="proceed('heart', 55, 1000, 'yes', 'kidney')" :class="{ 'selected animated rubberBand': formData.kidney === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('heart', 55, 1000, 'no', 'kidney')" :class="{ 'selected animated rubberBand': formData.kidney === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
-                                        </div>
-                                    </div>
-
-                                     <div class="questions" v-else-if="currentQ === 'heart'" key="heart" v-touch:swipe="swipeHandler('heart')">
-                                        <h2 class="ask smaller">Have you ever been diagnosed or treated for:</h2>
-
-                                        <h2 class="ask">Heart Disease?</h2>
-
-                                        <div class="checkMark">
-                                            <a @click.prevent="proceed('liver', 55, 1000, 'yes', 'heart')" :class="{ 'selected animated rubberBand': formData.heart === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('liver', 55, 1000, 'no', 'heart')" :class="{ 'selected animated rubberBand': formData.heart === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
-                                        </div>
-                                    </div>
-
-                                    <div class="questions" v-else-if="currentQ === 'liver'" key="liver" v-touch:swipe="swipeHandler('liver')">
-                                        <h2 class="ask smaller">Have you ever been diagnosed or treated for:</h2>
-
-                                        <h2 class="ask">Liver Disease?</h2>
-
-                                        <div class="checkMark">
-                                            <a @click.prevent="proceed('blood', 61, 1000, 'yes', 'liver')" :class="{ 'selected animated rubberBand': formData.liver === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('blood', 61, 1000, 'no', 'liver')" :class="{ 'selected animated rubberBand': formData.liver === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
-                                        </div>
-                                    </div>
-
-                                    <div class="questions" v-else-if="currentQ === 'blood'" key="blood" v-touch:swipe="swipeHandler('blood')">
+                                    <div class="questions" v-else-if="currentQ === 'blood'" key="blood">
                                         <h2 class="ask smaller">Have you ever been diagnosed or treated for:</h2>
 
                                         <h2 class="ask">High Blood Pressure?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('bloodRange', 63, 1000, 'yes', 'blood')" :class="{ 'selected animated rubberBand': formData.blood === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('cholesterol', 65, 1000, 'no', 'blood')" :class="{ 'selected animated rubberBand': formData.blood === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('bloodRange', 63, 300, 'yes', 'blood')" :class="{ 'selected animated flash': formData.blood === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('cholesterol', 65, 300, 'no', 'blood')" :class="{ 'selected animated flash': formData.blood === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'bloodRange'" key="bloodRange" v-touch:swipe="swipeHandler('bloodRange')">
+                                    <div class="questions" v-else-if="currentQ === 'bloodRange'" key="bloodRange">
                                         <h2 class="ask smaller">Is your blood pressure currently in the normal range?</h2>
 
                                         <div class="checkMark smaller">
-                                            <a @click.prevent="proceed('cholesterol', 65, 1000, 'yes', 'bloodRange')" :class="{ 'selected animated rubberBand': formData.bloodRange === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('cholesterol', 65, 1000, 'no', 'bloodRange')" :class="{ 'selected animated rubberBand': formData.bloodRange === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
-                                            <a @click.prevent="proceed('cholesterol', 65, 1000, 'noIdea', 'bloodRange')" :class="{ 'selected animated rubberBand': formData.bloodRange === 'noIdea'}"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span><br>I Don't Know</a>
+                                            <a @click.prevent="proceed('cholesterol', 65, 300, 'yes', 'bloodRange')" :class="{ 'selected animated flash': formData.bloodRange === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('cholesterol', 65, 300, 'no', 'bloodRange')" :class="{ 'selected animated flash': formData.bloodRange === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('cholesterol', 65, 300, 'noIdea', 'bloodRange')" :class="{ 'selected animated flash': formData.bloodRange === 'noIdea'}"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span><br>I Don't Know</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'cholesterol'" key="cholesterol" v-touch:swipe="swipeHandler('cholesterol')">
+                                    <div class="questions" v-else-if="currentQ === 'cholesterol'" key="cholesterol">
                                         <h2 class="ask smaller">Have you ever been diagnosed or treated for:</h2>
 
-                                        <h2 class="ask">High Cholesterol Pressure?</h2>
+                                        <h2 class="ask">High Cholesterol?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('cholesterolRange', 67, 1000, 'yes', 'cholesterol')" :class="{ 'selected animated rubberBand': formData.cholesterol === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('anxiety', 70, 1000, 'no', 'cholesterol')" :class="{ 'selected animated rubberBand': formData.cholesterol === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('cholesterolRange', 67, 300, 'yes', 'cholesterol')" :class="{ 'selected animated flash': formData.cholesterol === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('anxiety', 70, 300, 'no', 'cholesterol')" :class="{ 'selected animated flash': formData.cholesterol === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'cholesterolRange'" key="cholesterolRange" v-touch:swipe="swipeHandler('cholesterolRange')">
+                                    <div class="questions" v-else-if="currentQ === 'cholesterolRange'" key="cholesterolRange">
                                         <h2 class="ask smaller">Is your cholesterol currently in the normal range?</h2>
 
                                         <div class="checkMark smaller">
-                                            <a @click.prevent="proceed('anxiety', 70, 1000, 'yes', 'cholesterolRange')" :class="{ 'selected animated rubberBand': formData.cholesterolRange === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('anxiety', 70, 1000, 'no', 'cholesterolRange')" :class="{ 'selected animated rubberBand': formData.cholesterolRange === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
-                                            <a @click.prevent="proceed('anxiety', 70, 1000, 'noIdea', 'cholesterolRange')" :class="{ 'selected animated rubberBand': formData.cholesterolRange === 'noIdea'}"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span><br>I Don't Know</a>
+                                            <a @click.prevent="proceed('anxiety', 70, 300, 'yes', 'cholesterolRange')" :class="{ 'selected animated flash': formData.cholesterolRange === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('anxiety', 70, 300, 'no', 'cholesterolRange')" :class="{ 'selected animated flash': formData.cholesterolRange === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('anxiety', 70, 300, 'noIdea', 'cholesterolRange')" :class="{ 'selected animated flash': formData.cholesterolRange === 'noIdea'}"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span><br>I Don't Know</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'anxiety'" key="anxiety" v-touch:swipe="swipeHandler('anxiety')">
+                                    <div class="questions" v-else-if="currentQ === 'anxiety'" key="anxiety">
                                         <h2 class="ask smaller">Have you ever been diagnosed or treated for:</h2>
 
                                         <h2 class="ask">Depression or Anxiety?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('anxietyHospitalize', 73, 1000, 'yes', 'anxiety')" :class="{ 'selected animated rubberBand': formData.anxiety === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('stroke', 80, 1000, 'no', 'anxiety')" :class="{ 'selected animated rubberBand': formData.anxiety === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('anxietyHospitalize', 73, 300, 'yes', 'anxiety')" :class="{ 'selected animated flash': formData.anxiety === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('stroke', 80, 300, 'no', 'anxiety')" :class="{ 'selected animated flash': formData.anxiety === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'anxietyHospitalize'" key="anxietyHospitalize" v-touch:swipe="swipeHandler('anxietyHospitalize')">
+                                    <div class="questions" v-else-if="currentQ === 'anxietyHospitalize'" key="anxietyHospitalize">
                                         <h2 class="ask smaller">Have you ever been admitted to a hospital for depression or anxiety?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('anxietyTwoyears', 76, 1000, 'yes', 'anxietyHospitalize')" :class="{ 'selected animated rubberBand': formData.anxietyHospitalize === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('anxietyTwoyears', 76, 1000, 'no', 'anxietyHospitalize')" :class="{ 'selected animated rubberBand': formData.anxietyHospitalize === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('anxietyTwoyears', 76, 300, 'yes', 'anxietyHospitalize')" :class="{ 'selected animated flash': formData.anxietyHospitalize === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('anxietyTwoyears', 76, 300, 'no', 'anxietyHospitalize')" :class="{ 'selected animated flash': formData.anxietyHospitalize === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'anxietyTwoyears'" key="anxietyTwoyears" v-touch:swipe="swipeHandler('anxietyTwoyears')">
+                                    <div class="questions" v-else-if="currentQ === 'anxietyTwoyears'" key="anxietyTwoyears">
                                         <h2 class="ask smaller">Have you had more than two episodes of depression or anxiety that required treatment in the past two years?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('anxietyUnemployed', 78, 1000, 'yes', 'anxietyTwoyears')" :class="{ 'selected animated rubberBand': formData.anxietyTwoyears === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('anxietyUnemployed', 78, 1000, 'no', 'anxietyTwoyears')" :class="{ 'selected animated rubberBand': formData.anxietyTwoyears === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('anxietyUnemployed', 78, 300, 'yes', 'anxietyTwoyears')" :class="{ 'selected animated flash': formData.anxietyTwoyears === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('anxietyUnemployed', 78, 300, 'no', 'anxietyTwoyears')" :class="{ 'selected animated flash': formData.anxietyTwoyears === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'anxietyUnemployed'" key="anxietyUnemployed" v-touch:swipe="swipeHandler('anxietyUnemployed')">
+                                    <div class="questions" v-else-if="currentQ === 'anxietyUnemployed'" key="anxietyUnemployed">
                                         <h2 class="ask smaller">Has your depression or anxiety ever caused you to become unemployed?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('stroke', 80, 1000, 'yes', 'anxietyUnemployed')" :class="{ 'selected animated rubberBand': formData.anxietyUnemployed === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('stroke', 80, 1000, 'no', 'anxietyUnemployed')" :class="{ 'selected animated rubberBand': formData.anxietyUnemployed === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('stroke', 80, 300, 'yes', 'anxietyUnemployed')" :class="{ 'selected animated flash': formData.anxietyUnemployed === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('stroke', 80, 300, 'no', 'anxietyUnemployed')" :class="{ 'selected animated flash': formData.anxietyUnemployed === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'stroke'" key="stroke" v-touch:swipe="swipeHandler('stroke')">
+                                    <div class="questions" v-else-if="currentQ === 'stroke'" key="stroke">
                                         <h2 class="ask smaller">Have 2 or more of your parents or siblings been diagnosed before the age of sixty with:</h2>
 
                                         <h2 class="ask">Stroke?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('familyHeart', 83, 1000, 'yes', 'stroke')" :class="{ 'selected animated rubberBand': formData.stroke === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('familyHeart', 83, 1000, 'no', 'stroke')" :class="{ 'selected animated rubberBand': formData.stroke === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('familyHeart', 83, 300, 'yes', 'stroke')" :class="{ 'selected animated flash': formData.stroke === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('familyHeart', 83, 300, 'no', 'stroke')" :class="{ 'selected animated flash': formData.stroke === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'familyHeart'" key="familyHeart" v-touch:swipe="swipeHandler('familyHeart')">
+                                    <div class="questions" v-else-if="currentQ === 'familyHeart'" key="familyHeart">
                                         <h2 class="ask smaller">Have 2 or more of your parents or siblings been diagnosed before the age of sixty with:</h2>
 
                                         <h2 class="ask">Heart Disease?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('familyCancer', 87, 1000, 'yes', 'familyHeart')" :class="{ 'selected animated rubberBand': formData.familyHeart === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('familyCancer', 87, 1000, 'no', 'familyHeart')" :class="{ 'selected animated rubberBand': formData.familyHeart === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('familyCancer', 87, 300, 'yes', 'familyHeart')" :class="{ 'selected animated flash': formData.familyHeart === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('familyCancer', 87, 300, 'no', 'familyHeart')" :class="{ 'selected animated flash': formData.familyHeart === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'familyCancer'" key="familyCancer" v-touch:swipe="swipeHandler('familyCancer')">
+                                    <div class="questions" v-else-if="currentQ === 'familyCancer'" key="familyCancer">
                                         <h2 class="ask smaller">Have 2 or more of your parents or siblings been diagnosed before the age of sixty with:</h2>
 
                                         <h2 class="ask">Cancer?</h2>
 
                                         <div class="checkMark">
-                                            <a @click.prevent="proceed('occupations', 90, 1000, 'yes', 'familyCancer')" :class="{ 'selected animated rubberBand': formData.familyCancer === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
-                                            <a @click.prevent="proceed('occupations', 90, 1000, 'no', 'familyCancer')" :class="{ 'selected animated rubberBand': formData.familyCancer === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
+                                            <a @click.prevent="proceed('occupations', 90, 300, 'yes', 'familyCancer')" :class="{ 'selected animated flash': formData.familyCancer === 'yes'}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br>Yes</a>
+                                            <a @click.prevent="proceed('occupations', 90, 300, 'no', 'familyCancer')" :class="{ 'selected animated flash': formData.familyCancer === 'no'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br>No</a>
                                         </div>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'occupations'" key="occupations" v-touch:swipe="swipeHandler('occupations')">
-                                        <h2 class="ask smaller smallMargin">Are you currently getting paid to engage in any of the following occupations?</h2>
+                                    <div class="questions" v-else-if="currentQ === 'occupations'" key="occupations">
+                                        <h2 class="ask smallest smallMargin">Are you currently getting paid to engage in any of the following occupations?</h2>
 
                                         <p class="caption text-info">Click all that apply.</p>
 
                                         <div class="checkList">
-                                            <a :class="{ 'selected animated rubberBand': formData.occupations.pilot === true }" @click.prevent="toggleOccupations('pilot')">Commercial Pilot<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.occupations.diver === true }" @click.prevent="toggleOccupations('diver')">Scuba Diver<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.occupations.worker === true }" @click.prevent="toggleOccupations('worker')">Off-Shore Rig Worker<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.occupations.artist === true }" @click.prevent="toggleOccupations('artist')">Boxer or Martial Artist<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.occupations.bomber === true }" @click.prevent="toggleOccupations('bomber')">Handler of Explosives<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.occupations.chemist === true }" @click.prevent="toggleOccupations('chemist')">Handler of Dangerous Chemicals<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.occupations.stunt === true }" @click.prevent="toggleOccupations('stunt')">Stunt Professional<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.occupations.none === true }" @click.prevent="toggleOccupations('none')">None of the above<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.occupations.pilot === true }" @click.prevent="toggleOccupations('pilot')">Commercial Pilot<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.occupations.diver === true }" @click.prevent="toggleOccupations('diver')">Scuba Diver<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.occupations.worker === true }" @click.prevent="toggleOccupations('worker')">Off-Shore Rig Worker<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.occupations.artist === true }" @click.prevent="toggleOccupations('artist')">Boxer or Martial Artist<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.occupations.bomber === true }" @click.prevent="toggleOccupations('bomber')">Handler of Explosives<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.occupations.chemist === true }" @click.prevent="toggleOccupations('chemist')">Handler of Dangerous Chemicals<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.occupations.stunt === true }" @click.prevent="toggleOccupations('stunt')">Stunt Professional<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.occupations.none === true }" @click.prevent="toggleOccupations('none')">None of the above<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
                                         </div>
 
                                         <transition name="light-speed-in">
@@ -406,20 +425,20 @@
                                         </transition>
                                     </div>
 
-                                    <div class="questions" v-else-if="currentQ === 'activities'" key="activities" v-touch:swipe="swipeHandler('activities')">
-                                        <h2 class="ask smaller smallMargin">Do you, or are you planning to engage in any of the following activities?</h2>
+                                    <div class="questions" v-else-if="currentQ === 'activities'" key="activities">
+                                        <h2 class="ask smallest smallMargin">Do you, or are you planning to engage in any of the following activities?</h2>
 
                                         <p class="caption text-info">Click all that apply.</p>
 
                                         <div class="checkList">
-                                            <a :class="{ 'selected animated rubberBand': formData.activities.jumping === true }" @click.prevent="toggleActivities('jumping')">Skydiving or Base Jumping<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.activities.flying === true }" @click.prevent="toggleActivities('flying')">Flying a Private Plane<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.activities.scuba === true }" @click.prevent="toggleActivities('scuba')">Scuba, Cave, Cliff or Wreck Diving<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.activities.skiing === true }" @click.prevent="toggleActivities('skiing')">Backcountry Skiing<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.activities.gliding === true }" @click.prevent="toggleActivities('gliding')">Hang Gliding<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.activities.climbing === true }" @click.prevent="toggleActivities('climbing')">Mountain Climbing<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.activities.racing === true }" @click.prevent="toggleActivities('racing')">Car or Motorcycle Racing<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
-                                            <a :class="{ 'selected animated rubberBand': formData.activities.none === true }" @click.prevent="toggleActivities('none')">None of the above<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.activities.jumping === true }" @click.prevent="toggleActivities('jumping')">Skydiving or Base Jumping<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.activities.flying === true }" @click.prevent="toggleActivities('flying')">Flying a Private Plane<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.activities.scuba === true }" @click.prevent="toggleActivities('scuba')">Scuba, Cave, Cliff or Wreck Diving<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.activities.skiing === true }" @click.prevent="toggleActivities('skiing')">Backcountry Skiing<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.activities.gliding === true }" @click.prevent="toggleActivities('gliding')">Hang Gliding<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.activities.climbing === true }" @click.prevent="toggleActivities('climbing')">Mountain Climbing<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.activities.racing === true }" @click.prevent="toggleActivities('racing')">Car or Motorcycle Racing<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                            <a :class="{ 'selected animated flash': formData.activities.none === true }" @click.prevent="toggleActivities('none')">None of the above<span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
                                         </div>
 
                                         <transition name="light-speed-in">
@@ -438,7 +457,6 @@
 
                                         <a href="tel:5555555555" class="btn btn-lg btn-primary">555-555-5555</a>
                                     </div>
-                                </template>
                             </transition>
                         </div>
                     </div>
@@ -469,8 +487,8 @@
             </div>
             <p class="pull-left">{{ progress }}% completed</p>
             <div class="pull-right" v-if="currentQ !== 'result'">
-                <button v-show="currentQ !== 'name'" @click="getPrev()" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
-                <button :disabled="formData[currentQ] == null" v-show="currentQ !== 'activities'" @click="getNext()" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+                <button v-show="currentQ !== 'name'" @click="getPrev()" class="btn btn-sm btn-primary">prev</button>
+                <button :disabled="formData[currentQ] == null" v-show="currentQ !== 'activities'" @click="getNext()" class="btn btn-sm btn-primary">next</button>
             </div>
         </div>
     </section>
@@ -485,9 +503,10 @@
                 progress: 0,
                 formData: {
                     name: null,
-                    age: null,
-                    weight: null,
-                    height: null,
+                    age: 25,
+                    weight: 60,
+                    heightF: 5,
+                    heightI: 8,
                     drink: null,
                     violation: null,
                     work: null,
@@ -549,7 +568,9 @@
             },
 
             bmi() {
-                return Math.round((this.formData.weight / (this.formData.height * this.formData.height)) * 703);
+                let h = (this.formData.heightF * 12) + this.formData.heighI;
+
+                return Math.round((this.formData.weight / (h * h)) * 703);
             },
 
             swipeHandler(param) {
@@ -616,6 +637,14 @@
                         this.showResults();
                     }
                 }, delay);
+
+                if (target == 'continue') {
+                    setTimeout(() => {
+                        this.currentQ = 'blood';
+
+                        this.progress = 63;
+                    }, 2000);
+                }
             },
 
             showResults() {
@@ -707,6 +736,24 @@
                 }
 
                 this.occupationsTriggered = true;
+            },
+            
+            trigger(reference) {
+                console.log(reference);
+
+                console.log(this.$refs.age.click());
+            },
+
+            scrollValue(event, data, min, max, step) {
+                if (event.deltaY < 0) {
+                    if (this.formData[data] != max) {
+                        this.formData[data] = this.formData[data] + step;
+                    }
+                } else {
+                    if (this.formData[data] != min) {
+                        this.formData[data] = this.formData[data] - step;
+                    }
+                }
             }
         }
     }
