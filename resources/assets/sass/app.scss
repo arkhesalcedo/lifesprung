@@ -114,17 +114,19 @@ body, html {
 	}
 }
 
+.okButton {
+	.btn {
+    	font-size: 4rem;
+    }
+}
+
 #okButton {
 	position: absolute;
 	right: 24px;
     bottom: 10px;
-
-    .btn {
-    	font-size: 6rem;
-    }
 }
 
-input[type="text"], input[type="number"], .halfLabel {
+input[type="text"], input[type="number"], .halfLabel, select {
 	border: 3px dashed $brand-info;
     border-radius: 3px;
 
@@ -162,11 +164,16 @@ select {
     display: inline-block;
     pointer-events: none;
     transform: rotate(-45deg);
-    height: 0.5em;
-    width: 0.5em;
+    height: 1em;
+    width: 1em;
     position: absolute;
-    top: 30px;
+    top: 47%;
     right: 20px;
+}
+
+.halfafterSelect {
+	top: 25%;
+	left: 40%;
 }
 
 button, a.button {
@@ -177,18 +184,61 @@ button, a.button {
 	}
 }
 
+input[type="number"] {
+  	-webkit-appearance: textfield;
+     	-moz-appearance: textfield;
+          	appearance: textfield;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  	-webkit-appearance: none;
+}
+
+.numberType {
+	position: relative;
+
+	.numberControl {
+		position: absolute;
+		font-size: 3rem;
+    	border: none;
+    	background: none;
+    	appearance: none;
+    	color: #82C8CD;
+    	cursor: pointer;
+
+    	&:hover {
+    		color: #F24C27;
+    	}
+
+		&.incre {
+			top: 5px;
+			right: 5px;
+		}
+
+		&.decre {
+			top: 62px;
+			right: 5px;
+		}
+	}
+}
+
 .checkMark {
 	margin: 0 0 4rem;
 
 	a {
 		border: 1px solid #ccc;
-	    padding: 10px;
+	    padding: 10px 20px;
 	    display: inline-block;
 	    margin-right: 10px;
 	    border-radius: 3px;
 	    color: #ccc;
 	    text-align: center;
 	    cursor: pointer;
+	    font-size: 3rem;
+
+	    &:hover {
+	    	text-decoration: none;
+	    }
 
 	    span {
 	    	font-size: 7rem;
@@ -251,6 +301,10 @@ button, a.button {
 .half {
 	display: inline-block !important;
 	width: 20% !important;
+}
+
+.half2 {
+	width: 50% !important;
 }
 
 .halfLabel {
@@ -391,11 +445,11 @@ button, a.button {
 }
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
-	input[type="text"], input[type="number"] {
+	input[type="text"], input[type="number"], select {
 		font-size: 4rem;
 	}
 
-	#okButton .btn {
+	.okButton .btn, #okButton .btn {
 		font-size: 2.3rem;
 	}
 
@@ -406,6 +460,10 @@ button, a.button {
 
 	.half {
 		width: 25% !important;
+	}
+
+	.half2 {
+		width: 50% !important;
 	}
 
 	.ask {

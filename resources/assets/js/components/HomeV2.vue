@@ -1,7 +1,7 @@
 <template>
     <section>
         <div class="container">
-            <transition name="flipX" mode="out-in">
+            <transition name="fade" mode="out-in">
                 <template>
                     <div class="row full-height theQ" v-if="formActive" key="form" v-touch:swipe="swipeHandler(currentQ)">
                         <div class="col-sm-8 col-sm-offset-2">
@@ -12,7 +12,7 @@
                                         <input type="text" v-model="formData.name" :autofocus="currentQ === 'name'" @keyup.enter="proceed('age', 10)">
 
                                         <transition name="light-speed-in">
-                                            <div v-if="formData.name !== null" id="okButton">
+                                            <div v-if="formData.name !== null" class="okButton">
                                                 <button class="btn btn-lg btn-primary" @click.prevent="proceed('age', 10)">OK</button>
                                             </div>
                                         </transition>
@@ -21,17 +21,26 @@
                                     <div class="questions" v-else-if="currentQ === 'age'" key="age">
                                         <h2 class="ask">Hi <b class="text-primary">{{ formData.name }}</b>, what's your age?</h2>
 
-                                        <!-- <select v-model="formData.age" ref="age" @change="proceed('weight', 14, 300)" :class="{ 'selected animated flash': formData.age !== null}">
-                                            <option :value="n + 17" v-for="n in 33">{{ n + 17 }}</option>   
-                                        </select> -->
+                                        <div class="selectWrapper hidden-sm hidden-md hidden-lg">
+                                            <select v-model="formData.age" ref="age" @change="proceed('weight', 14, 300)" :class="{ 'selected animated flash': formData.age !== null}">
+                                                <option :value="n + 17" v-for="n in 33">{{ n + 17 }}</option>   
+                                            </select>
 
-                                        <input type="number" :autofocus="currentQ === 'age'" v-model="formData.age" min="18" max="50" @wheel="scrollValue('age', 18, 50, 1)">
+                                            <span class="afterSelect"></span>
+                                        </div>
 
-                                        <transition name="light-speed-in" appear>
-                                            <div>
-                                                <button class="btn btn-lg btn-primary" @click.prevent="proceed('weight', 14, 300)">OK</button>
-                                            </div>
-                                        </transition>
+                                        <div class="numberType hidden-xs">
+                                            <input type="number" :autofocus="currentQ === 'age'" v-model="formData.age" min="18" max="50" @wheel="scrollValue('age', 18, 50, 1)">
+
+                                            <button class="numberControl incre" @click="formData.age < 50 ? formData.age++ : ''"><span class="glyphicon glyphicon-chevron-up"></span></button>
+                                            <button class="numberControl decre" @click="formData.age > 18 ? formData.age-- : ''"><span class="glyphicon glyphicon-chevron-down"></span></button>
+
+                                            <transition name="light-speed-in" appear>
+                                                <div class="okButton">
+                                                    <button class="btn btn-lg btn-primary" @click.prevent="proceed('weight', 14, 300)">OK</button>
+                                                </div>
+                                            </transition>
+                                        </div>
                                     </div>
 
                                     <div class="questions" v-else-if="currentQ === 'weight'" key="weight">
@@ -39,149 +48,132 @@
 
                                         <p class="subTitle">(pounds) Choose the closest value to your actual weight.</p>
 
-                                         <!-- <select v-model="formData.weight" ref="weight" @change="proceed('height', 18, 300)" :class="{ 'selected animated flash': formData.weight !== null}">
-                                                <option value="60">60</option>
-                                                <option value="65">65</option>
-                                                <option value="70">70</option>
-                                                <option value="75">75</option>
-                                                <option value="80">80</option>
-                                                <option value="85">85</option>
-                                                <option value="90">90</option>
-                                                <option value="95">95</option>
-                                                <option value="100">100</option>
-                                                <option value="105">105</option>
-                                                <option value="110">110</option>
-                                                <option value="115">115</option>
-                                                <option value="120">120</option>
-                                                <option value="125">125</option>
-                                                <option value="130">130</option>
-                                                <option value="135">135</option>
-                                                <option value="140">140</option>
-                                                <option value="145">145</option>
-                                                <option value="150">150</option>
-                                                <option value="155">155</option>
-                                                <option value="160">160</option>
-                                                <option value="165">165</option>
-                                                <option value="170">170</option>
-                                                <option value="175">175</option>
-                                                <option value="180">180</option>
-                                                <option value="185">185</option>
-                                                <option value="190">190</option>
-                                                <option value="195">195</option>
-                                                <option value="200">200</option>
-                                                <option value="205">205</option>
-                                                <option value="210">210</option>
-                                                <option value="215">215</option>
-                                                <option value="220">220</option>
-                                                <option value="225">225</option>
-                                                <option value="230">230</option>
-                                                <option value="235">235</option>
-                                                <option value="240">240</option>
-                                                <option value="245">245</option>
-                                                <option value="250">250</option>
-                                                <option value="255">255</option>
-                                                <option value="260">260</option>
-                                                <option value="265">265</option>
-                                                <option value="270">270</option>
-                                                <option value="275">275</option>
-                                                <option value="280">280</option>
-                                                <option value="285">285</option>
-                                                <option value="290">290</option>
-                                                <option value="295">295</option>
-                                                <option value="300">300</option>
-                                                <option value="305">305</option>
-                                                <option value="310">310</option>
-                                                <option value="315">315</option>
-                                                <option value="320">320</option>
-                                                <option value="325">325</option>
-                                                <option value="330">330</option>
-                                                <option value="335">335</option>
-                                                <option value="340">340</option>
-                                                <option value="345">345</option>
-                                                <option value="350">350</option>
-                                                <option value="355">355</option>
-                                                <option value="360">360</option>
-                                                <option value="365">365</option>
-                                                <option value="370">370</option>
-                                                <option value="375">375</option>
-                                                <option value="380">380</option>
-                                                <option value="385">385</option>
-                                                <option value="390">390</option>
-                                                <option value="395">395</option>
-                                                <option value="400">400</option>  
-                                        </select> -->
+                                        <div class="selectWrapper hidden-sm hidden-md hidden-lg">
+                                            <select v-model="formData.weight" ref="weight" @change="proceed('heightF', 18, 300)" :class="{ 'selected animated flash': formData.weight !== null}" class="half half2">
+                                                    <option value="60">60</option>
+                                                    <option value="65">65</option>
+                                                    <option value="70">70</option>
+                                                    <option value="75">75</option>
+                                                    <option value="80">80</option>
+                                                    <option value="85">85</option>
+                                                    <option value="90">90</option>
+                                                    <option value="95">95</option>
+                                                    <option value="100">100</option>
+                                                    <option value="105">105</option>
+                                                    <option value="110">110</option>
+                                                    <option value="115">115</option>
+                                                    <option value="120">120</option>
+                                                    <option value="125">125</option>
+                                                    <option value="130">130</option>
+                                                    <option value="135">135</option>
+                                                    <option value="140">140</option>
+                                                    <option value="145">145</option>
+                                                    <option value="150">150</option>
+                                                    <option value="155">155</option>
+                                                    <option value="160">160</option>
+                                                    <option value="165">165</option>
+                                                    <option value="170">170</option>
+                                                    <option value="175">175</option>
+                                                    <option value="180">180</option>
+                                                    <option value="185">185</option>
+                                                    <option value="190">190</option>
+                                                    <option value="195">195</option>
+                                                    <option value="200">200</option>
+                                                    <option value="205">205</option>
+                                                    <option value="210">210</option>
+                                                    <option value="215">215</option>
+                                                    <option value="220">220</option>
+                                                    <option value="225">225</option>
+                                                    <option value="230">230</option>
+                                                    <option value="235">235</option>
+                                                    <option value="240">240</option>
+                                                    <option value="245">245</option>
+                                                    <option value="250">250</option>
+                                                    <option value="255">255</option>
+                                                    <option value="260">260</option>
+                                                    <option value="265">265</option>
+                                                    <option value="270">270</option>
+                                                    <option value="275">275</option>
+                                                    <option value="280">280</option>
+                                                    <option value="285">285</option>
+                                                    <option value="290">290</option>
+                                                    <option value="295">295</option>
+                                                    <option value="300">300</option>
+                                                    <option value="305">305</option>
+                                                    <option value="310">310</option>
+                                                    <option value="315">315</option>
+                                                    <option value="320">320</option>
+                                                    <option value="325">325</option>
+                                                    <option value="330">330</option>
+                                                    <option value="335">335</option>
+                                                    <option value="340">340</option>
+                                                    <option value="345">345</option>
+                                                    <option value="350">350</option>
+                                                    <option value="355">355</option>
+                                                    <option value="360">360</option>
+                                                    <option value="365">365</option>
+                                                    <option value="370">370</option>
+                                                    <option value="375">375</option>
+                                                    <option value="380">380</option>
+                                                    <option value="385">385</option>
+                                                    <option value="390">390</option>
+                                                    <option value="395">395</option>
+                                                    <option value="400">400</option>  
+                                            </select>
+                                            <span class="halfLabel" style="position: relative; top: -5px;">pounds</span>
+                                            <span class="afterSelect halfafterSelect"></span>
+                                        </div>
 
-                                        <input type="number" v-model="formData.weight" step="5" min="60" max="400" @wheel="scrollValue('weight', 60, 400, 5)">
+                                        <div class="hidden-xs numberType">
+                                            <input type="number" v-model="formData.weight" step="5" min="60" max="400" @wheel="scrollValue('weight', 60, 400, 5)" class="half half2"> <span class="halfLabel">pounds</span>
 
-                                        <transition name="light-speed-in" appear>
-                                            <div>
-                                                <button class="btn btn-lg btn-primary" @click.prevent="proceed('heightF', 18, 300)">OK</button>
-                                            </div>
-                                        </transition>
+                                            <button class="numberControl incre" style="right: 380px;" @click="formData.weight < 400 ? formData.weight = formData.weight + 5 : ''"><span class="glyphicon glyphicon-chevron-up"></span></button>
+                                            <button class="numberControl decre" style="right: 380px;" @click="formData.weight > 60 ? formData.weight = formData.weight - 5 : ''"><span class="glyphicon glyphicon-chevron-down"></span></button>
+
+                                            <transition name="light-speed-in" appear>
+                                                <div class="okButton">
+                                                    <button class="btn btn-lg btn-primary" @click.prevent="proceed('heightF', 18, 300)">OK</button>
+                                                </div>
+                                            </transition>
+                                        </div>
                                     </div>
 
                                     <div class="questions" v-else-if="currentQ === 'heightF' || currentQ === 'heightI'" key="heightF">
                                         <h2 class="ask">What is your height?</h2>
 
-                                        <!-- <select v-model="formData.height" ref="height" @change="proceed('drink', 22, 300)" :class="{ 'selected animated flash': formData.height !== null}">
-                                            <option value="49">4’1”</option>
-                                            <option value="50">4’2”</option>
-                                            <option value="51">4’3”</option>
-                                            <option value="52">4’4”</option>
-                                            <option value="54">4’5”</option>
-                                            <option value="54">4’6”</option>
-                                            <option value="55">4’7”</option>
-                                            <option value="56">4’8”</option>
-                                            <option value="57">4’9”</option>
-                                            <option value="58">4’10”</option>
-                                            <option value="59">4’11”</option>
-                                            <option value="60">5’0”</option>
-                                            <option value="61">5’1”</option>
-                                            <option value="62">5’2”</option>
-                                            <option value="63">5’3”</option>
-                                            <option value="64">5’4”</option>
-                                            <option value="65">5’5”</option>
-                                            <option value="66">5’6”</option>
-                                            <option value="67">5’7”</option>
-                                            <option value="68">5’8”</option>
-                                            <option value="69">5’9”</option>
-                                            <option value="70">5’10”</option>
-                                            <option value="71">5’11”</option>
-                                            <option value="72">6’0”</option>
-                                            <option value="72">6’1”</option>
-                                            <option value="74">6’2”</option>
-                                            <option value="75">6’3”</option>
-                                            <option value="76">6’4”</option>
-                                            <option value="77">6’5”</option>
-                                            <option value="78">6’6”</option>
-                                            <option value="79">6’7”</option>
-                                            <option value="80">6’8”</option>
-                                            <option value="81">6’9”</option>
-                                            <option value="82">6’10”</option>
-                                            <option value="83">6’11”</option>
-                                            <option value="84">7’0”</option>
-                                            <option value="85">7’1”</option>
-                                            <option value="86">7’2”</option>
-                                            <option value="87">7’3”</option>
-                                            <option value="88">7’4”</option>
-                                            <option value="89">7’5”</option>
-                                            <option value="90">7’6”</option>
-                                            <option value="91">7’7”</option>
-                                            <option value="92">7’8”</option>
-                                            <option value="93">7’9”</option>
-                                            <option value="94">7’10”</option>
-                                            <option value="95">7’11”</option>
-                                        </select> -->
+                                        <div class="selectWrapper hidden-sm hidden-md hidden-lg">
+                                            <select v-model="formData.heightF" ref="heightF" :class="{ 'selected animated flash': formData.heightF !== null}" class="half">
+                                                <option :value="n + 2" v-for="n in 5">{{ n + 2 }}</option>
+                                            </select>
 
-                                        <input class="half" type="number" v-model="formData.heightF" step="1" min="3" max="7" @wheel="scrollValue('heightF', 3, 7, 1)"> <span class="halfLabel">feet</span>
+                                            <span class="halfLabel" style="position: relative; top: -5px;">feet</span>
+                                            <span class="afterSelect halfafterSelect" style="left: 16%;"></span>
 
-                                        <input class="half" type="number" v-model="formData.heightI" step="1" min="1" max="11" @wheel="scrollValue('heightI', 1, 11, 1)"> <span class="halfLabel">inches</span>
+                                            <select v-model="formData.heightI" ref="heightI" @change="proceed('drink', 22, 300)" :class="{ 'selected animated flash': formData.heightI !== null}" class="half">
+                                                <option :value="n + 1" v-for="n in 11">{{ n + 1 }}</option>
+                                            </select>
 
-                                        <transition name="light-speed-in" appear>
-                                            <div>
-                                                <button class="btn btn-lg btn-primary" @click.prevent="proceed('drink', 22, 300)">OK</button>
-                                            </div>
-                                        </transition>
+                                            <span class="halfLabel" style="position: relative; top: -5px;">inches</span>
+                                            <span class="afterSelect halfafterSelect" style="left: 59%;"></span>
+                                        </div>
+
+                                        <div class="hidden-xs numberType">
+                                            <input class="half" type="number" v-model="formData.heightF" step="1" min="3" max="7" @wheel="scrollValue('heightF', 3, 7, 1)"> <span class="halfLabel">feet</span>
+
+                                            <button class="numberControl incre" style="right: 605px;" @click="formData.heightF < 7 ? formData.heightF++ : ''"><span class="glyphicon glyphicon-chevron-up"></span></button>
+                                            <button class="numberControl decre" style="right: 605px;" @click="formData.heightF > 3 ? formData.heightF-- : ''"><span class="glyphicon glyphicon-chevron-down"></span></button>
+
+                                            <input class="half" type="number" v-model="formData.heightI" step="1" min="1" max="11" @wheel="scrollValue('heightI', 1, 11, 1)"> <span class="halfLabel">inches</span>
+
+                                            <button class="numberControl incre" style="right: 290px;" @click="formData.heightI < 12 ? formData.heightI++ : ''"><span class="glyphicon glyphicon-chevron-up"></span></button>
+                                            <button class="numberControl decre" style="right: 290px;" @click="formData.heightI > 1 ? formData.heightI-- : ''"><span class="glyphicon glyphicon-chevron-down"></span></button>
+
+                                            <transition name="light-speed-in" appear>
+                                                <div class="okButton">
+                                                    <button class="btn btn-lg btn-primary" @click.prevent="proceed('drink', 22, 300)">OK</button>
+                                                </div>
+                                            </transition>
+                                        </div>
                                     </div>
 
                                     <div class="questions" v-else-if="currentQ === 'drink'" key="drink">
@@ -283,7 +275,7 @@
                                         <h2 class="ask">Few more questions to go! Almost there.</h2>
 
                                         <transition name="light-speed-in">
-                                            <div>
+                                            <div class="okButton">
                                                 <button class="btn btn-lg btn-primary" @click.prevent="proceed('blood', 63)">CONTINUE</button> or press <b>ENTER</b>
                                             </div>
                                         </transition>
@@ -451,7 +443,7 @@
                                     <div class="questions text-center" v-else-if="currentQ === 'result'" key="result">
                                         <h2 class="animated zoomIn mainTitle resultTitle" v-if="qualified">It is very likely that you will qualify for low-cost life insurance.</h2>
 
-                                        <h2 class="animated zoomIn mainTitle resultTitle" v-else>We need ask you more questions to evaluate your eligibility.</h2>
+                                        <h2 class="animated zoomIn mainTitle resultTitle" v-else>We need to ask you more questions to evaluate your eligibility.</h2>
 
                                         <h2 class="ask smaller caption animated fadeInDown">Please call us at</h2>
 
@@ -499,12 +491,12 @@
         data() {
             return {
                 formActive: false,
-                currentQ: 'name',
+                currentQ: 'age',
                 progress: 0,
                 formData: {
                     name: '',
-                    age: 25,
-                    weight: 60,
+                    age: 35,
+                    weight: 155,
                     heightF: 5,
                     heightI: 8,
                     drink: '',
